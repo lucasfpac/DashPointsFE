@@ -168,7 +168,7 @@ const Formulario = () => {
             className='p-3 border border-gray-300 rounded-md shadow-sm'
           />
           <FormCheckbox
-            id='ccpolitica'
+            id='regulamento'
             text='Concordo com o Regulamento e Politica de Privacidade deste site.'
             className='p-3 border border-gray-300 rounded-md shadow-sm'
           />
