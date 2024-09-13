@@ -1,13 +1,13 @@
 import React from "react";
 import FormInput from "./FormInput";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import FormSelect from "./FormSelect";
 import FormRadio from "./FormRadio";
 import FormCheckbox from "./FormCheckbox";
-import useForm from "../../Hooks/useForm";
-import useFetch from "../../Hooks/useFetch";
-import { CEP_GET } from "../../services/api";
-import { CUSTOMERS_POST } from "../../services/api";
+import useForm from "../../../Hooks/useForm";
+import useFetch from "../../../Hooks/useFetch";
+import { CEP_GET } from "../../../services/api";
+import { CUSTOMERS_POST } from "../../../services/api";
 import Error from "@/Helper/Error";
 import { Navigate } from "react-router-dom";
 

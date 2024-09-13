@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../Header/Header";
 import Title from "../Title/Title";
 import Footer from "../Footer/Footer";
-import FormularioCompra from "../Form/FormularioCompra";
+import FormularioCompra from "../Formulario/FormularioCompra";
 
 const CadastroCompra = () => {
   return (

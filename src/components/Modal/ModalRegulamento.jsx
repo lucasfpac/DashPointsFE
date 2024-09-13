@@ -1,5 +1,3 @@
-// src/components/ModalRegulamento.js
-
 import React from "react";
 
 const ModalRegulamento = () => {

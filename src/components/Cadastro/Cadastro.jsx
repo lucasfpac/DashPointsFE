@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../Header/Header";
-import Formulario from "../Form/Formulario";
+import Formulario from "../Formulario/Formulario";
 import Title from "../Title/Title";
 import Footer from "../Footer/Footer";
 
