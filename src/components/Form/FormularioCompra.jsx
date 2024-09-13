@@ -1,5 +1,6 @@
 import React from "react";
 import FormInput from "./FormInput";
+import FormDate from "./FormDate";
 import { Button } from "../ui/button";
 import FormSelect from "./FormSelect";
 import useForm from "../../Hooks/useForm";
@@ -11,6 +12,7 @@ import { Navigate } from "react-router-dom";
 const FormularioCompra = () => {
   const [selectedStore, setSelectedStore] = React.useState("");
   const [redirect, setRedirect] = React.useState(false);
+  const [selectedDate, setSelectedDate] = React.useState(null);
 
   const nf = useForm("number");
   const valor = useForm("number");
@@ -27,6 +29,7 @@ const FormularioCompra = () => {
       name: nome.value,
       surname: nome.value,
       phone: celular.value,
+      date: selectedDate,
     };
 
     console.log("Dados enviados:", data);
@@ -75,12 +78,12 @@ const FormularioCompra = () => {
             {...valor}
           />
         </div>
-        <FormInput
-          className='w-full p-3 border border-gray-300 rounded-md shadow-sm mt-4'
-          type='number'
-          id='valor'
-          title='Valor'
-          {...valor}
+        <FormDate
+          name='dataCompra'
+          title='Data da Compra'
+          value={selectedDate}
+          onChange={setSelectedDate}
+          error={error}
         />
         <div className='grid justify-center items-center mt-10'>
           <p className='font-bold'>

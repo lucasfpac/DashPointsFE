@@ -12,8 +12,8 @@ const Cadastro = () => {
         title='Cadastrar Compra'
         paragraph='1. Digite seus dados pessoais'
       />
-      <div className='flex mt-3 justify-center items-center'>
-        <div className='w-full max-w-4xl p-4'>
+      <div className='flex mt-3 justify-center items-center overflow-x-hidden'>
+        <div className='w-full p-4'>
           <Formulario />
         </div>
       </div>

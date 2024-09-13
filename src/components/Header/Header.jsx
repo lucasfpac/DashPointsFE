@@ -1,14 +1,13 @@
 import React from "react";
 import logo from "../../assets/img/logo.png";
-import styles from "./Header.module.css";
 import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <header className='h-[120px] bg-black flex justify-center items-center'>
-      <div className={styles.logo}>
+    <header className='h-[80px] bg-black flex justify-center items-center'>
+      <div className='w-32'>
         <Link to='/'>
-          <img src={logo} alt='' />
+          <img src={logo} alt='Logo' className='h-full object-contain' />
         </Link>
       </div>
     </header>

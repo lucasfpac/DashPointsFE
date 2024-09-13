@@ -9,7 +9,7 @@ const Footer = () => {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <footer className='w-full bg-black h-20 text-white flex justify-around items-center'>
+    <footer className='w-full bg-black h-11 text-white flex justify-around items-center'>
       <p>Todos os direitos reservados • 2024</p>
       <p onClick={openModal} className='cursor-pointer'>
         Regulamento
