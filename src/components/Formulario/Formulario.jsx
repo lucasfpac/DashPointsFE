@@ -1,13 +1,14 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import useForm from "../../Hooks/useForm";
-import useFetch from "../../Hooks/useFetch";
-import { CEP_GET, CUSTOMERS_POST } from "../../services/api";
+import useForm from "../Hooks/useForm";
+import useFetch from "../Hooks/useFetch";
+import { CEP_GET, CUSTOMERS_POST, TOKEN_POST } from "../../services/api";
 import FormInputFields from "./InputFields/FormInputFields";
 import FormAddressFields from "./AddressFields/FormAddressFields";
 import FormStoreSelect from "./FormStoreSelect/FormStoreSelect";
 import FormConsentCheckboxes from "./ConsentCheckboxes/FormConsentCheckboxes";
 import FormActions from "./FormActions/FormActions";
+import FormRadio from "./FormRadio/FormRadio";
 
 const Formulario = () => {
   const [cidade, setCidade] = React.useState("");
@@ -16,6 +17,7 @@ const Formulario = () => {
   const [selectedValue, setSelectedValue] = React.useState("");
   const [additionalInputValue, setAdditionalInputValue] = React.useState("");
   const [redirect, setRedirect] = React.useState(false);
+  const [token, setToken] = React.useState(null); // Store the token
 
   const cpfecnpj = useForm("cpfecnpj");
   const email = useForm("email");
@@ -52,26 +54,47 @@ const Formulario = () => {
       name: nome.value,
       surname: nome.value,
       phone: celular.value,
-      store: selectedStore,
-      additionalInput: additionalInputValue,
     };
 
     const { url, options } = CUSTOMERS_POST(data);
     const { response, json } = await request(url, options);
 
     if (response.ok) {
-      setRedirect(true);
+      try {
+        // Now request the token based on the CPF or CNPJ
+        const tokenBody = { cpfCnpj: cpfecnpj.value };
+        const { url: tokenUrl, options: tokenOptions } = TOKEN_POST(tokenBody);
+        const { response: tokenResponse, json: tokenJson } = await request(
+          tokenUrl,
+          tokenOptions
+        );
+
+        if (tokenResponse.ok) {
+          setToken(tokenJson.token); // Store token
+          localStorage.setItem("token", tokenJson.token); // Optionally store in localStorage
+          setRedirect(true); // Redirect to next form
+        } else {
+          console.error(
+            "Failed to fetch token",
+            tokenResponse.status,
+            tokenJson
+          );
+        }
+      } catch (e) {
+        console.error("Token fetching error", e);
+      }
     } else {
-      console.log("Erro no envio do formulário:", response.status, json);
+      console.error("Erro no envio do formulário:", response.status, json);
     }
   }
 
   return (
     <>
-      {redirect && <Navigate to='/reimprimir-token' />}
+      {redirect && <Navigate to='/cadastro-compra' state={{ token }} />}{" "}
+      {/* Passing token via state */}
       <form
         onSubmit={handleSubmit}
-        className='w-full max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg'
+        className='w-full max-w-xl mx-auto p-6 bg-white rounded-lg shadow-lg grid grid-cols-2 gap-2'
       >
         <FormInputFields
           cpfecnpj={cpfecnpj}
@@ -90,13 +113,17 @@ const Formulario = () => {
         <FormStoreSelect
           selectedStore={selectedStore}
           setSelectedStore={setSelectedStore}
-          selectedValue={selectedValue}
-          setSelectedValue={setSelectedValue}
-          additionalInputValue={additionalInputValue}
-          setAdditionalInputValue={setAdditionalInputValue}
         />
-        <FormConsentCheckboxes />
-        <FormActions loading={loading} error={error} />
+        <div className='flex flex-col gap-2 col-span-2'>
+          <FormRadio
+            selectedValue={selectedValue}
+            setSelectedValue={setSelectedValue}
+            additionalInputValue={additionalInputValue}
+            setAdditionalInputValue={setAdditionalInputValue}
+          />
+          <FormConsentCheckboxes />
+          <FormActions loading={loading} error={error} />
+        </div>
       </form>
     </>
   );

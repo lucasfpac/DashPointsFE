@@ -3,7 +3,7 @@ import Header from "../Header/Header";
 import FormInput from "../Formulario/InputFields/FormInput";
 import { Button } from "../ui/button";
 import Footer from "../Footer/Footer";
-import useForm from "../../Hooks/useForm";
+import useForm from "../Hooks/useForm";
 
 const Cadastro = () => {
   const cpfecnpj = useForm("cpfecnpj");

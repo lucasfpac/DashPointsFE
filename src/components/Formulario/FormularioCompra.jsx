@@ -1,16 +1,19 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import useForm from "../../Hooks/useForm";
-import useFetch from "../../Hooks/useFetch";
+import useForm from "../Hooks/useForm";
+import useFetch from "../Hooks/useFetch";
 import { CUSTOMERS_POST } from "../../services/api";
 import FormPurchaseDetails from "./FormPurchaseDetails/FormPurchaseDetails";
 import FormDate from "../shared/FormDate";
 import FormSummary from "./FormSummary/FormSummary";
 import FormButtons from "./FormButtons/FormButtons";
-import Error from "@/Helper/Error";
-import FormStoreSelection from "./FormStoreSelect/FormStoreSelect";
+import Error from "@/components/Helper/Error";
+import FormStoreSelect from "./FormStoreSelect/FormStoreSelect";
 
 const FormularioCompra = () => {
+  const location = React.useLocation();
+  const token = location.state?.token || localStorage.getItem("token"); // Retrieve token
+
   const [selectedStore, setSelectedStore] = React.useState("");
   const [selectedDate, setSelectedDate] = React.useState(null);
   const [redirect, setRedirect] = React.useState(false);
@@ -50,7 +53,7 @@ const FormularioCompra = () => {
         onSubmit={handleSubmit}
         className='w-full max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg'
       >
-        <FormStoreSelection
+        <FormStoreSelect
           selectedStore={selectedStore}
           setSelectedStore={setSelectedStore}
         />

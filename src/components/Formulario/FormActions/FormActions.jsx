@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "../../ui/button";
-import Error from "@/Helper/Error";
+import Error from "@/components/Helper/Error";
 
 const FormActions = ({ loading, error }) => {
   return (

@@ -19,7 +19,7 @@ const Home = () => {
           </p>
         </div>
         <div className='flex flex-col gap-5 mt-5'>
-          <Link to='/cadastro-compra'>
+          <Link to='/cadastro'>
             <Button variant='outline'>CADASTRAR COMPRA</Button>
           </Link>
           <Link to='/reimprimir-voucher'>

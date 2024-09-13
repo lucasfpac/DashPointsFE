@@ -3,10 +3,10 @@ import FormInput from "./FormInput";
 import FormDate from "./FormDate";
 import { Button } from "../../ui/button";
 import FormSelect from "./FormSelect";
-import useForm from "../../../Hooks/useForm";
-import useFetch from "../../../Hooks/useFetch";
+import useForm from "../../Hooks/useForm";
+import useFetch from "../../Hooks/useFetch";
 import { CUSTOMERS_POST } from "../../../services/api";
-import Error from "@/Helper/Error";
+import Error from "@/components/Helper/Error";
 import { Navigate } from "react-router-dom";
 
 const FormularioCompra = () => {

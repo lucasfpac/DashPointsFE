@@ -1,22 +1,14 @@
 import React, { useEffect } from "react";
 import FormSelect from "../../shared/FormSelect";
-import FormRadioGroup from "./FormRadioGroup";
-import useFetch from "../../hooks/useFetch";
-import { STORES_GET } from "../../services/api";
+import useFetch from "../../Hooks/useFetch";
+import { STORES_GET } from "../../../services/api";
 
-const FormStoreSelect = ({
-  selectedStore,
-  setSelectedStore,
-  selectedValue,
-  setSelectedValue,
-  additionalInputValue,
-  setAdditionalInputValue,
-}) => {
+const FormStoreSelect = ({ selectedStore, setSelectedStore }) => {
   const { data: stores, loading, error, request } = useFetch();
 
   useEffect(() => {
     const fetchStores = async () => {
-      const { url, options } = STORES_GET(); // Fetch stores from the API
+      const { url, options } = STORES_GET();
       await request(url, options);
     };
 
@@ -25,33 +17,17 @@ const FormStoreSelect = ({
 
   return (
     <>
-      {loading && <p>Loading stores...</p>}
-      {error && <p>Error loading stores: {error}</p>}
+      {loading && <p>Carregando lojas...</p>}
+      {error && <p>Erro ao carregar lojas: {error}</p>}
       {!loading && stores && (
         <FormSelect
           label='Selecione uma loja'
-          options={stores.map((store) => store.name)} // Assuming each store object has a 'name' property
+          options={stores?.results.map((store) => store.name)}
           placeholder='Escolha uma loja'
           value={selectedStore}
           onChange={setSelectedStore}
         />
       )}
-
-      <FormRadioGroup
-        label='Sentiu falta de alguma loja?'
-        value={selectedValue}
-        onChange={setSelectedValue}
-        options={[
-          { value: "sim", label: "Sim" },
-          { value: "nao", label: "Não" },
-        ]}
-        additionalInput={{
-          condition: "sim",
-          placeholder: "Qual?",
-          value: additionalInputValue,
-        }}
-        onAdditionalInputChange={setAdditionalInputValue}
-      />
     </>
   );
 };
