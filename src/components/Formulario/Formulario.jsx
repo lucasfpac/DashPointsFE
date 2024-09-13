@@ -5,12 +5,11 @@ import useFetch from "../../Hooks/useFetch";
 import { CEP_GET, CUSTOMERS_POST } from "../../services/api";
 import FormInputFields from "./InputFields/FormInputFields";
 import FormAddressFields from "./AddressFields/FormAddressFields";
-import FormStoreSelection from "./StoreSelection/FormStoreSelection";
+import FormStoreSelect from "./FormStoreSelect/FormStoreSelect";
 import FormConsentCheckboxes from "./ConsentCheckboxes/FormConsentCheckboxes";
 import FormActions from "./FormActions/FormActions";
 
 const Formulario = () => {
-  // State for dynamic form elements
   const [cidade, setCidade] = React.useState("");
   const [uf, setUf] = React.useState("");
   const [selectedStore, setSelectedStore] = React.useState("");
@@ -18,7 +17,6 @@ const Formulario = () => {
   const [additionalInputValue, setAdditionalInputValue] = React.useState("");
   const [redirect, setRedirect] = React.useState(false);
 
-  // Custom form hooks for input management
   const cpfecnpj = useForm("cpfecnpj");
   const email = useForm("email");
   const cep = useForm("cep");
@@ -27,7 +25,6 @@ const Formulario = () => {
 
   const { loading, error, request } = useFetch();
 
-  // Handle CEP Blur to fetch city and state
   async function handleCepBlur() {
     const isValid = cep.validate();
     if (isValid) {
@@ -46,7 +43,6 @@ const Formulario = () => {
     }
   }
 
-  // Handle form submission
   async function handleSubmit(event) {
     event.preventDefault();
     const data = {
@@ -56,6 +52,8 @@ const Formulario = () => {
       name: nome.value,
       surname: nome.value,
       phone: celular.value,
+      store: selectedStore,
+      additionalInput: additionalInputValue,
     };
 
     const { url, options } = CUSTOMERS_POST(data);
@@ -75,15 +73,12 @@ const Formulario = () => {
         onSubmit={handleSubmit}
         className='w-full max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg'
       >
-        {/* Input Fields */}
         <FormInputFields
           cpfecnpj={cpfecnpj}
           nome={nome}
           email={email}
           celular={celular}
         />
-
-        {/* Address Fields */}
         <FormAddressFields
           cep={cep}
           handleCepBlur={handleCepBlur}
@@ -92,9 +87,7 @@ const Formulario = () => {
           uf={uf}
           setUf={setUf}
         />
-
-        {/* Store Selection */}
-        <FormStoreSelection
+        <FormStoreSelect
           selectedStore={selectedStore}
           setSelectedStore={setSelectedStore}
           selectedValue={selectedValue}
@@ -102,11 +95,7 @@ const Formulario = () => {
           additionalInputValue={additionalInputValue}
           setAdditionalInputValue={setAdditionalInputValue}
         />
-
-        {/* Consent Checkboxes */}
         <FormConsentCheckboxes />
-
-        {/* Form Actions */}
         <FormActions loading={loading} error={error} />
       </form>
     </>

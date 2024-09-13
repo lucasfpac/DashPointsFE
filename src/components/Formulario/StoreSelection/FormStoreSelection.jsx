@@ -1,41 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import FormSelect from "../../shared/FormSelect";
-import FormRadioGroup from "./FormRadioGroup";
+import useFetch from "../../hooks/useFetch";
+import { STORES_GET } from "../../services/api";
 
-const FormStoreSelection = ({
-  selectedStore,
-  setSelectedStore,
-  selectedValue,
-  setSelectedValue,
-  additionalInputValue,
-  setAdditionalInputValue,
-}) => {
+const FormStoreSelect = ({ selectedStore, setSelectedStore }) => {
+  const { data: stores, loading, error, request } = useFetch();
+
+  useEffect(() => {
+    const fetchStores = async () => {
+      const { url, options } = STORES_GET();
+      await request(url, options);
+    };
+
+    fetchStores();
+  }, [request]);
+
   return (
-    <>
-      <FormSelect
-        label='Selecione uma loja'
-        options={["Artefato", "Brentwood", "BK", "WTC"]}
-        placeholder='Escolha uma loja'
-        value={selectedStore}
-        onChange={setSelectedStore}
-      />
-      <FormRadioGroup
-        label='Sentiu falta de alguma loja?'
-        value={selectedValue}
-        onChange={setSelectedValue}
-        options={[
-          { value: "sim", label: "Sim" },
-          { value: "nao", label: "Não" },
-        ]}
-        additionalInput={{
-          condition: "sim",
-          placeholder: "Qual?",
-          value: additionalInputValue,
-        }}
-        onAdditionalInputChange={setAdditionalInputValue}
-      />
-    </>
+    <div className='my-4 w-full'>
+      {loading && <p>Loading stores...</p>}
+      {error && <p>Error loading stores: {error}</p>}
+      {!loading && stores && (
+        <FormSelect
+          label='Selecione uma loja'
+          options={stores.map((store) => store.name)}
+          placeholder='Selecione a loja'
+          value={selectedStore}
+          onChange={setSelectedStore}
+        />
+      )}
+    </div>
   );
 };
 
-export default FormStoreSelection;
+export default FormStoreSelect;

@@ -62,3 +62,15 @@ export function CUSTOMERS_POST(body) {
     },
   };
 }
+
+export function STORES_GET() {
+  return {
+    url: API_URL + "/stores",
+    options: {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  };
+}
