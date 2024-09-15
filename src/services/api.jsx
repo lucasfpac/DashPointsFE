@@ -1,13 +1,14 @@
-export const API_URL = "https://lucasfortunato.com.br/dashpoints/api";
+export const API_URL = 'https://lucasfortunato.com.br/dashpoints/api';
+export const API_URL2 = 'http://localhost:3000';
 
 export function CEP_GET(cep) {
   return {
     url: `https://viacep.com.br/ws/${cep}/json/`,
     options: {
-      method: "GET",
-      mode: "cors",
+      method: 'GET',
+      mode: 'cors',
       headers: {
-        "content-type": "application/json;charset=utf-8",
+        'content-type': 'application/json;charset=utf-8',
       },
     },
   };
@@ -15,11 +16,11 @@ export function CEP_GET(cep) {
 
 export function TOKEN_POST(body) {
   return {
-    url: API_URL + "validate-token",
+    url: API_URL2 + '/token',
     options: {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
     },
@@ -28,11 +29,11 @@ export function TOKEN_POST(body) {
 
 export function TOKEN_VALIDATE_POST(token) {
   return {
-    url: API_URL + "/validate-token",
+    url: API_URL2 + '/validade',
     options: {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Authorization: "Bearer " + token,
+        Authorization: 'Bearer ' + token,
       },
     },
   };
@@ -40,11 +41,11 @@ export function TOKEN_VALIDATE_POST(token) {
 
 export function CUSTOMERS_GET(token) {
   return {
-    url: API_URL + "/customers",
+    url: API_URL2 + '/customers',
     options: {
-      method: "GET",
+      method: 'GET',
       headers: {
-        Authorization: "Bearer " + token,
+        Authorization: 'Bearer ' + token,
       },
     },
   };
@@ -52,11 +53,11 @@ export function CUSTOMERS_GET(token) {
 
 export function CUSTOMERS_POST(body) {
   return {
-    url: API_URL + "/customers",
+    url: API_URL2 + '/customers',
     options: {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
     },
@@ -65,11 +66,11 @@ export function CUSTOMERS_POST(body) {
 
 export function STORES_GET() {
   return {
-    url: API_URL + "/stores",
+    url: API_URL + '/stores',
     options: {
-      method: "GET",
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     },
   };

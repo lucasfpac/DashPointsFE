@@ -1,23 +1,26 @@
-import React from "react";
-import Header from "../Header/Header";
-import Formulario from "../Formulario/Formulario";
-import Title from "../Title/Title";
-import Footer from "../Footer/Footer";
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import NotFound from '../NotFound';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
+import CadastroCompra from './CadastroCompra';
+import CadastroCustomer from './CadastroCustomer';
+import { CustomerContext } from '@/CustomerContext';
 
 const Cadastro = () => {
+  // const { data } = React.useContext(CustomerContext);
+
   return (
     <>
       <Header />
-      <Title
-        title='Cadastrar Compra'
-        paragraph='1. Digite seus dados pessoais'
-      />
-      <div className='flex mt-3 justify-center items-center overflow-x-hidden'>
-        <div className='w-full p-4'>
-          <Formulario />
-        </div>
-      </div>
-      <Footer />
+      <section className="container">
+        <Routes>
+          <Route path="/" element={<CadastroCustomer />} />
+          <Route path="compra" element={<CadastroCompra />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Footer />
+      </section>
     </>
   );
 };
