@@ -4,7 +4,7 @@ import { CustomerContext } from '@/CustomerContext';
 
 const ProtectedRoute = ({ children }) => {
   const { login } = React.useContext(CustomerContext);
-  return login ? children : <Navigate to="/reimprimir-voucher" />;
+  return login ? children : <Navigate to="/busca" />;
 };
 
 export default ProtectedRoute;
