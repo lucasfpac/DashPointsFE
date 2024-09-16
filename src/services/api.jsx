@@ -45,6 +45,7 @@ export function CUSTOMERS_GET(token) {
     options: {
       method: 'GET',
       headers: {
+        'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token,
       },
     },
@@ -60,6 +61,18 @@ export function CUSTOMERS_POST(body) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
+    },
+  };
+}
+
+export function COMPRAS_POST(token) {
+  return {
+    url: API_URL2 + '/compras',
+    options: {
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
     },
   };
 }

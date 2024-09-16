@@ -3,9 +3,9 @@ import Home from './components/Home/Home';
 import './App.css';
 import Cadastro from './components/Cadastro/Cadastro';
 import ReimprimirVoucher from './components/Voucher/ReimprimirVoucher';
-import CadastroCompra from './components/Cadastro/CadastroCompra';
 import ProtectedRoute from './components/Helper/ProtectedRoute';
 import { CustomerStorage } from './CustomerContext';
+import CustomerInfo from './components/Cadastro/CustomerInfo';
 
 const App = () => {
   return (
@@ -19,7 +19,7 @@ const App = () => {
               path="cadastro/compra"
               element={
                 <ProtectedRoute>
-                  <CadastroCompra />
+                  <CustomerInfo />
                 </ProtectedRoute>
               }
             />

@@ -1,6 +1,6 @@
 import React from 'react';
-import Formulario from '../Formulario/Formulario';
 import Title from '../Title/Title';
+import Formulario from '../Formulario/Formulario';
 
 const CadastroCustomer = () => {
   return (

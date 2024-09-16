@@ -1,14 +1,12 @@
 import React from 'react';
 import useForm from '../Hooks/useForm';
 import useFetch from '../Hooks/useFetch';
-import { CUSTOMERS_POST } from '../../services/api';
+import { COMPRAS_POST } from '../../services/api';
 import FormPurchaseDetails from './FormPurchaseDetails/FormPurchaseDetails';
 import FormDate from '../shared/FormDate';
-import FormSummary from './FormSummary/FormSummary';
-import FormButtons from './FormButtons/FormButtons';
 import Error from '@/components/Helper/Error';
 import FormStoreSelect from './FormStoreSelect/FormStoreSelect';
-import { CustomerContext } from '@/CustomerContext';
+import { Button } from '../ui/button';
 
 const FormularioCompra = () => {
   const [selectedStore, setSelectedStore] = React.useState('');
@@ -17,36 +15,20 @@ const FormularioCompra = () => {
   const nf = useForm('number');
   const valor = useForm('number');
 
-  const { loading, error, request } = useFetch();
-  const { data: customerData } = React.useContext(CustomerContext);
+  const { error, loading, request } = useFetch();
 
   async function handleSubmit(event) {
     event.preventDefault();
+    const formData = new FormData();
 
-    if (!customerData) {
-      console.log('Cliente não encontrado. Por favor, faça login.');
-      return;
-    }
+    formData.append('nf', nf.value);
+    formData.append('data', selectedDate);
+    formData.append('valor', valor.value);
+    formData.append('loja', selectedStore);
 
-    const data = {
-      cpf: customerData.cpf,
-      nf: nf.value,
-      date: selectedDate,
-      valor: valor.value,
-      store: selectedStore,
-    };
-
-    console.log('Dados enviados:', data);
-
-    const { url, options } = CUSTOMERS_POST(data);
-    const { response, json } = await request(url, options);
-
-    if (response.ok) {
-      console.log('Formulário enviado com sucesso', json);
-      setRedirect(true);
-    } else {
-      console.log('Erro no envio do formulário:', response.status, json);
-    }
+    const token = window.localStorage.getItem('token');
+    const { url, options } = COMPRAS_POST(formData, token);
+    request(url, options);
   }
 
   return (
@@ -67,8 +49,8 @@ const FormularioCompra = () => {
           onChange={setSelectedDate}
           error={error}
         />
-        <FormSummary />
-        <FormButtons loading={loading} />
+        <br />
+        <Button loading={loading}>Adicionar</Button>
         <div className="text-center">
           <Error error={error} />
         </div>

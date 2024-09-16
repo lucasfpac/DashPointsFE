@@ -1,13 +1,30 @@
-import React from "react";
+import React from 'react';
 
-const FormSummary = () => {
+const FormSummary = ({ totalCompras }) => {
+  const META_BRINDE = 20000;
+
+  const saldoRestante = META_BRINDE - totalCompras;
+
   return (
-    <div className='grid justify-center items-center mt-10'>
-      <p className='font-bold'>
-        SUAS NOTAS SOMAM: <span>R$ 0,00</span>
+    <div className="grid justify-center items-center mt-10">
+      <p className="font-bold">
+        SUAS NOTAS SOMAM:{' '}
+        <span>
+          {totalCompras.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          })}
+        </span>
       </p>
-      <p className='font-bold'>
-        FALTAM: R$ 21.900,00 PARA CONQUISTAR SEU BRINDE
+      <p className="font-bold">
+        FALTAM:{' '}
+        <span>
+          {saldoRestante.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          })}
+        </span>{' '}
+        PARA CONQUISTAR SEU BRINDE
       </p>
     </div>
   );
