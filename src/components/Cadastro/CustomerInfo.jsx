@@ -10,7 +10,6 @@ import Footer from '../Footer/Footer';
 
 const CustomerInfo = () => {
   const { loading } = useFetch();
-
   const { data } = useContext(CustomerContext);
 
   const totalCompras =
@@ -18,7 +17,9 @@ const CustomerInfo = () => {
       ? data[0].compras.reduce((acc, compra) => acc + compra.valor, 0)
       : 0;
 
-  console.log(data[0].name);
+  // You should replace this with the actual target value from your application
+  const targetValue = 2000; // Example target value
+
   return (
     <div className="flex flex-col min-h-screen">
       <div>
@@ -36,7 +37,11 @@ const CustomerInfo = () => {
           <div className="w-full max-w-full md:max-w-4xl p-2">
             <CustomerTable totalCompras={totalCompras} />
             <FormSummary totalCompras={totalCompras} />
-            <FormButtons loading={loading} />
+            <FormButtons
+              loading={loading}
+              totalCompras={totalCompras}
+              targetValue={targetValue}
+            />
           </div>
         </div>
       </main>

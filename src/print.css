@@ -1,0 +1,33 @@
+@page {
+  size: 62mm 100mm;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    width: 62mm;
+    height: 100mm;
+    margin: 0;
+    padding: 0;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .receipt,
+  .receipt * {
+    visibility: visible;
+  }
+
+  .receipt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 62mm;
+    height: 100mm;
+    padding: 0;
+    margin: 0;
+  }
+}

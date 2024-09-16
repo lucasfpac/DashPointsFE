@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { X } from 'lucide-react';
+import { Dialog } from '@/components/ui/dialog';
 
-const Modal = ({ isOpen, onClose, children }) => {
-  const modalRef = React.useRef(null);
-  const [isInteractingWithPortal, setIsInteractingWithPortal] =
-    React.useState(false);
+const Modal = ({ isOpen, onClose, children, title }) => {
+  const modalRef = useRef(null);
+  const [isInteractingWithPortal, setIsInteractingWithPortal] = useState(false);
 
-  React.useEffect(() => {
-    const handleClickOutside = (event) => {
+  const handleClickOutside = useCallback(
+    (event) => {
       if (
         modalRef.current &&
         !modalRef.current.contains(event.target) &&
@@ -14,51 +15,87 @@ const Modal = ({ isOpen, onClose, children }) => {
       ) {
         onClose();
       }
-    };
+    },
+    [onClose, isInteractingWithPortal]
+  );
 
+  const handleEscapeKey = useCallback(
+    (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    },
+    [onClose]
+  );
+
+  const handlePortalInteraction = useCallback(
+    () => setIsInteractingWithPortal(true),
+    []
+  );
+  const handlePortalInteractionEnd = useCallback(
+    () => setIsInteractingWithPortal(false),
+    []
+  );
+
+  useEffect(() => {
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleEscapeKey);
+      document.addEventListener('focusin', handlePortalInteraction);
+      document.addEventListener('focusout', handlePortalInteractionEnd);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen, onClose, isInteractingWithPortal]);
-
-  const handlePortalInteraction = () => setIsInteractingWithPortal(true);
-  const handlePortalInteractionEnd = () => setIsInteractingWithPortal(false);
-
-  React.useEffect(() => {
-    document.addEventListener('focusin', handlePortalInteraction);
-    document.addEventListener('focusout', handlePortalInteractionEnd);
-
-    return () => {
+      document.removeEventListener('keydown', handleEscapeKey);
       document.removeEventListener('focusin', handlePortalInteraction);
       document.removeEventListener('focusout', handlePortalInteractionEnd);
     };
-  }, []);
+  }, [
+    isOpen,
+    handleClickOutside,
+    handleEscapeKey,
+    handlePortalInteraction,
+    handlePortalInteractionEnd,
+  ]);
+
+  useEffect(() => {
+    if (isOpen) {
+      const focusableElements = modalRef.current.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusableElements.length) {
+        focusableElements[0].focus();
+      }
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-      <div
-        ref={modalRef}
-        className="relative bg-white p-6 rounded shadow-lg w-full max-w-2xl mx-4 overflow-auto max-h-[90vh]"
-      >
-        {/* Sticky Close Button */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 float-right right-4 text-gray-500 hover:text-gray-700 p-2 bg-gray-100 rounded-m"
-          aria-label="Close"
-          style={{ zIndex: 1000 }} // Ensure the button stays on top of the content
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 overflow-y-auto">
+        <div
+          ref={modalRef}
+          className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-2xl mx-4 my-8 relative overflow-auto max-h-[90vh]"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-title"
         >
-          &#10005; {/* X symbol */}
-        </button>
-
-        {children}
+          <h2 id="modal-title" className="text-xl font-semibold mb-4">
+            {title}
+          </h2>
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 dark:text-gray-300 dark:hover:text-gray-100 transition-colors"
+            aria-label="Close"
+          >
+            <X size={24} />
+          </button>
+          <div className="mt-2">{children}</div>
+        </div>
       </div>
-    </div>
+    </Dialog>
   );
 };
 

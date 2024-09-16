@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './components/Home/Home';
 import './App.css';
 import Cadastro from './components/Cadastro/Cadastro';
-import ReimprimirVoucher from './components/Voucher/ReimprimirVoucher';
+import ReimprimirVoucher from './components/Cadastro/CustomerSearch';
 import ProtectedRoute from './components/Helper/ProtectedRoute';
 import { CustomerStorage } from './CustomerContext';
 import CustomerInfo from './components/Cadastro/CustomerInfo';

@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button } from '../../ui/button';
 import ModalFormCompra from '@/components/Modal/ModalFormCompra';
 import Modal from '@/components/Modal/Modal';
+import VoucherModal from '@/components/Modal/ModalVoucher';
+import { CustomerContext } from '@/CustomerContext';
 
-const FormButtons = ({ loading }) => {
+const FormButtons = ({ loading, totalCompras, targetValue }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isVoucherModalOpen, setIsVoucherModalOpen] = React.useState(false);
+  const { data } = useContext(CustomerContext);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+
+  const openVoucherModal = () => setIsVoucherModalOpen(true);
+  const closeVoucherModal = () => setIsVoucherModalOpen(false);
+
+  const isTargetReached = totalCompras >= targetValue;
 
   return (
     <div className="flex justify-center items-center mt-8 gap-10">
@@ -18,8 +27,16 @@ const FormButtons = ({ loading }) => {
       {loading ? (
         <Button disabled>Finalizar</Button>
       ) : (
-        <Button>Finalizar</Button>
+        <Button onClick={openVoucherModal} disabled={!isTargetReached}>
+          Finalizar
+        </Button>
       )}
+      <VoucherModal
+        isOpen={isVoucherModalOpen}
+        onClose={closeVoucherModal}
+        customerData={data[0]}
+        totalCompras={totalCompras}
+      />
     </div>
   );
 };

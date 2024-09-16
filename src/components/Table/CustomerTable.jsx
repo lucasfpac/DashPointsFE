@@ -10,54 +10,33 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { CustomerContext } from '@/CustomerContext';
-
-const invoices = [
-  {
-    invoice: 'INV001',
-    paymentStatus: 'Paid',
-    totalAmount: '$250.00',
-    paymentMethod: 'Credit Card',
-  },
-  {
-    invoice: 'INV002',
-    paymentStatus: 'Pending',
-    totalAmount: '$150.00',
-    paymentMethod: 'PayPal',
-  },
-  {
-    invoice: 'INV003',
-    paymentStatus: 'Unpaid',
-    totalAmount: '$350.00',
-    paymentMethod: 'Bank Transfer',
-  },
-  {
-    invoice: 'INV004',
-    paymentStatus: 'Paid',
-    totalAmount: '$450.00',
-    paymentMethod: 'Credit Card',
-  },
-  {
-    invoice: 'INV005',
-    paymentStatus: 'Paid',
-    totalAmount: '$550.00',
-    paymentMethod: 'PayPal',
-  },
-  {
-    invoice: 'INV006',
-    paymentStatus: 'Pending',
-    totalAmount: '$200.00',
-    paymentMethod: 'Bank Transfer',
-  },
-  {
-    invoice: 'INV007',
-    paymentStatus: 'Unpaid',
-    totalAmount: '$300.00',
-    paymentMethod: 'Credit Card',
-  },
-];
+import PrintLayout from '../Voucher/VoucherPrintLayout';
+import { Button } from '../ui/button';
 
 const CustomerTable = ({ totalCompras }) => {
   const { data } = useContext(CustomerContext);
+
+  const customer = data[0];
+
+  const openPrintWindow = (invoice, customer) => {
+    const printWindow = window.open('', '', 'width=300,height=500');
+
+    const content = PrintLayout({ invoice, customer });
+
+    printWindow.document.open();
+    printWindow.document.write(content);
+    printWindow.document.close();
+
+    printWindow.onload = () => {
+      printWindow.focus();
+      printWindow.print();
+      printWindow.onafterprint = () => printWindow.close();
+    };
+  };
+
+  if (!data || !data[0] || !data[0].compras) {
+    return <p>Carregando dados...</p>;
+  }
 
   return (
     <div>
@@ -68,6 +47,7 @@ const CustomerTable = ({ totalCompras }) => {
             <TableHead className="w-[100px]">NF</TableHead>
             <TableHead>Loja</TableHead>
             <TableHead className="text-right">Valor</TableHead>
+            <TableHead className="text-right">Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -78,12 +58,17 @@ const CustomerTable = ({ totalCompras }) => {
               <TableCell className="text-right">
                 R$ {invoice.valor.toFixed(2)}
               </TableCell>
+              <TableCell className="text-right">
+                <Button onClick={() => openPrintWindow(invoice, customer)}>
+                  Imprimir Voucher
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell colSpan={2}>Total</TableCell>
+            <TableCell colSpan={3}>Total</TableCell>
             <TableCell className="text-right">
               R$ {totalCompras.toFixed(2)}
             </TableCell>
