@@ -8,8 +8,8 @@ const types = {
     message: "Preencha um email válido",
   },
   number: {
-    regex: /^\d+$/,
-    message: "Utilize números apenas.",
+    regex: /^\+?\d{1,3}\d+$/,
+    message: "Utilize números apenas, incluindo o código do país.",
   },
   cpfecnpj: {
     regex:

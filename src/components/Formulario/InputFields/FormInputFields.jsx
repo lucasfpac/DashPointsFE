@@ -35,7 +35,7 @@ const FormInputFields = ({ cpfecnpj, nome, email, celular }) => {
         value={email.value}
       />
       <FormInput
-        type='number'
+        type='text'
         name='celular'
         title='Celular'
         placeholder='(XX) XXXXX-XXXX'

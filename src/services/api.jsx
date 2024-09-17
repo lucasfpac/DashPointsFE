@@ -54,7 +54,7 @@ export function CUSTOMERS_GET(token) {
 
 export function CUSTOMERS_POST(body) {
   return {
-    url: API_URL2 + '/customers',
+    url: API_URL + '/customers/',
     options: {
       method: 'POST',
       headers: {
