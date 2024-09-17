@@ -6,6 +6,7 @@ import Landing from './pages/LandingPage/LandingPage';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Points from './pages/Points/Points';
+import CustomerRegister from './pages/Customers/Customers';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -33,7 +34,7 @@ function App() {
 
   const validateToken = async (token) => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/validate-token/', {
+      const response = await fetch('https://lucasfortunato.com.br/api/validate-token/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -79,6 +80,7 @@ function App() {
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/points" element={isLoggedIn ? <Points /> : <Login onLogin={handleLogin} />} />
+        <Route path="/customers" element={isLoggedIn ? <CustomerRegister /> : <Login onLogin={handleLogin} />}></Route>
       </Routes>
     </Router>
   );

@@ -3,6 +3,8 @@ import { getPoints, addPoint } from '../../services/pointsService';
 import { getStores } from '../../services/storeService';
 import { getUsers } from '../../services/authService';
 import { getCustomers } from '../../services/customerService'
+import { downloadVoucher } from '../../services/pointsService';
+
 import './Points.css';
 
 function Points() {
@@ -67,6 +69,14 @@ function Points() {
     return store ? store.name : "Desconhecido";
   };
 
+  const handleDownloadVoucher = async (voucherId) => {
+    try {
+      await downloadVoucher(voucherId); // Call the service to download the voucher
+    } catch (error) {
+      console.error('Error downloading the voucher', error);
+    }
+  };
+
   return (
     <div className="points-container">
       <h2>Gerenciamento de Pontos</h2>
@@ -94,7 +104,7 @@ function Points() {
           <option value="">Selecione um cliente</option>
           {customers.map((customer) => (
             <option key={customer.id} value={customer.id}>
-              {customer.name}
+              {customer.name} {customer.surname}
             </option>
           ))}
         </select>
@@ -150,11 +160,11 @@ function Points() {
             {pointsList.map((point) => (
               <tr key={point.id}>
                 <td>{getUserName(point.user)}</td>
-                <td>{getCustomerName(point.user)}</td>
+                <td>{getCustomerName(point.customer)}</td>
                 <td>{getStoreName(point.store)}</td>
                 <td>R$ {point.value.toFixed(2)}</td>
                 <td>{new Date(point.date).toLocaleDateString()}</td>
-                <td><button className='voucher-btn'>Download Voucher</button></td>
+                <td><button onClick={() => handleDownloadVoucher(point.id)}>Download Voucher</button></td>
               </tr>
             ))}
             

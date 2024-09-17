@@ -18,7 +18,7 @@ function Navbar({ isLoggedIn, onLogout, username }) {
           {isLoggedIn ? (
             <div>
               <Link to="/points" className="navbar-btn">Registrar Pontos</Link>
-              <Link to="" className="navbar-btn">Registrar Cliente</Link>
+              <Link to="/customers" className="navbar-btn">Registrar Cliente</Link>
               <button onClick={onLogout} className="navbar-btn">Sair</button>
             </div>
             
