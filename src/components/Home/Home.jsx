@@ -9,7 +9,7 @@ const Home = () => {
     <section className='flex flex-col min-h-screen bg-black'>
       <div className='flex flex-col justify-center items-center flex-grow'>
         <div className='flex flex-col items-center justify-center text-white font-bold'>
-          <div className='w-[500px] max-w-full'>
+          <div className='w-[300px] max-w-full'>
             <img src={logo} alt='Logo' />
           </div>
           <p>Seja bem-vindo!</p>
@@ -18,7 +18,7 @@ const Home = () => {
             poucos cliques
           </p>
         </div>
-        <div className='flex flex-col gap-5 mt-5 w-[300px] max-w-full'>
+        <div className='flex flex-col gap-5 mt-7 w-[300px] max-w-full'>
           <Link to='/cadastro'>
             <Button variant='outline' className='w-full'>
               CADASTRAR CLIENTE
