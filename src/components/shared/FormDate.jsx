@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Label } from "@/components/ui/label";
 import {
   Popover,
@@ -13,6 +13,12 @@ const FormDate = ({ name, title, error, onChange, value }) => {
   const today = new Date();
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(value || today);
+
+  useEffect(() => {
+    if (value) {
+      setSelectedDate(value);
+    }
+  }, [value]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
