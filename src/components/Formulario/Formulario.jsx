@@ -60,6 +60,7 @@ const Formulario = () => {
         missingstore: additionalInputValue,
         selected_store: selectedStore,
       };
+      console.log(data);
 
       const { url, options } = CUSTOMERS_POST(data);
       const { response } = await request(url, options);

@@ -14,7 +14,7 @@ const FormularioCompra = () => {
   const today = new Date();
   const [selectedStore, setSelectedStore] = React.useState("");
   const [selectedDate, setSelectedDate] = React.useState(today);
-  const { data: cpf } = React.useContext(CustomerContext);
+  const { data } = React.useContext(CustomerContext);
 
   const nf = useForm("number");
   const valor = useForm("number");
@@ -31,9 +31,8 @@ const FormularioCompra = () => {
     formData.append("valor", valor.value);
     formData.append("loja", selectedStore);
 
-    console.log(formData, cpf);
-    // const { url, options } = COMPRAS_POST(formData, cpf);
-    // request(url, options);
+    const { url, options } = COMPRAS_POST(formData, data.cpf_cnpj);
+    request(url, options);
   }
 
   return (

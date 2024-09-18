@@ -8,9 +8,7 @@ const FormActions = ({ loading, error }) => {
       <div className='flex justify-center items-center mt-8'>
         {loading ? <Button disabled>Avançar</Button> : <Button>Avançar</Button>}
       </div>
-      <div className='text-center'>
-        <Error error={error} />
-      </div>
+      <div className='text-center'>{error && <Error error={error} />}</div>
     </div>
   );
 };

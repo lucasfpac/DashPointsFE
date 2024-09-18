@@ -37,7 +37,7 @@ const FormRadioGroup = ({
           <Input
             placeholder={additionalInput.placeholder}
             value={additionalInput.value}
-            onChange={onAdditionalInputChange}
+            onChange={(event) => onAdditionalInputChange(event.target.value)}
           />
         </div>
       )}

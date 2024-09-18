@@ -7,6 +7,12 @@ const FormRadio = ({
   additionalInputValue,
   setAdditionalInputValue,
 }) => {
+  React.useEffect(() => {
+    if (selectedValue === "nao") {
+      setAdditionalInputValue("");
+    }
+  }, [selectedValue, setAdditionalInputValue]);
+
   return (
     <>
       <FormRadioGroup
@@ -20,9 +26,9 @@ const FormRadio = ({
         additionalInput={{
           condition: "sim",
           placeholder: "Qual?",
-          value: additionalInputValue.text,
+          value: additionalInputValue,
         }}
-        onAdditionalInputChange={setAdditionalInputValue}
+        onAdditionalInputChange={(value) => setAdditionalInputValue(value)}
       />
     </>
   );
