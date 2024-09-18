@@ -8,11 +8,13 @@ import Error from "@/components/Helper/Error";
 import FormStoreSelect from "./FormStoreSelect/FormStoreSelect";
 import { Button } from "../ui/button";
 import { format } from "date-fns";
+import { CustomerContext } from "@/CustomerContext";
 
 const FormularioCompra = () => {
   const today = new Date();
   const [selectedStore, setSelectedStore] = React.useState("");
   const [selectedDate, setSelectedDate] = React.useState(today);
+  const { data: cpf } = React.useContext(CustomerContext);
 
   const nf = useForm("number");
   const valor = useForm("number");
@@ -29,9 +31,9 @@ const FormularioCompra = () => {
     formData.append("valor", valor.value);
     formData.append("loja", selectedStore);
 
-    const token = window.localStorage.getItem("token");
-    const { url, options } = COMPRAS_POST(formData, token);
-    request(url, options);
+    console.log(formData, cpf);
+    // const { url, options } = COMPRAS_POST(formData, cpf);
+    // request(url, options);
   }
 
   return (
@@ -52,7 +54,7 @@ const FormularioCompra = () => {
           onChange={setSelectedDate}
         />
         <br />
-        <Button loading={loading}>Adicionar</Button>
+        <Button loading={loading ? loading : undefined}>Adicionar</Button>
         <div className='text-center'>
           <Error error={error} />
         </div>

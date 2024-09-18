@@ -29,7 +29,8 @@ const CustomerInfo = () => {
           title='Compras do Cliente'
           paragraph='Verifique as compras e imprima o comprovante'
         />
-        <p className='text-center font-bold'>CPF: {data.cpf}</p>
+        <p className='text-center font-bold'>CPF: {data.cpf_cnpj}</p>
+        {console.log(data)}
         <hr />
         <br />
         <div className='flex flex-col flex-1 justify-center items-center w-full'>

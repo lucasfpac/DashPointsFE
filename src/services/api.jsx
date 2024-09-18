@@ -13,39 +13,38 @@ export function CEP_GET(cep) {
   };
 }
 
-export function TOKEN_POST(body) {
-  return {
-    url: API_URL + "/token",
-    options: {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    },
-  };
-}
+// export function TOKEN_POST(body) {
+//   return {
+//     url: API_URL + "/token",
+//     options: {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(body),
+//     },
+//   };
+// }
 
-export function TOKEN_VALIDATE_POST(token) {
-  return {
-    url: API_URL + "/validade",
-    options: {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    },
-  };
-}
+// export function TOKEN_VALIDATE_POST(token) {
+//   return {
+//     url: API_URL + "/validade",
+//     options: {
+//       method: "POST",
+//       headers: {
+//         Authorization: "Bearer " + token,
+//       },
+//     },
+//   };
+// }
 
-export function CUSTOMERS_GET(token) {
+export function CUSTOMERS_GET(cpfecnpj) {
   return {
-    url: API_URL + "/customers",
+    url: API_URL + `/customers/cpf_cnpj/?cpf_cnpj=${cpfecnpj}`,
     options: {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
       },
     },
   };
@@ -64,13 +63,13 @@ export function CUSTOMERS_POST(body) {
   };
 }
 
-export function COMPRAS_POST(formData, token) {
+export function COMPRAS_POST(formData, cpfecnpj) {
   return {
-    url: API_URL + "/compras",
+    url: API_URL + `/compras/${cpfecnpj}`,
     options: {
-      method: "GET",
+      method: "POST",
       headers: {
-        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
       },
       body: formData,
     },

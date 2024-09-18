@@ -50,18 +50,15 @@ const Formulario = () => {
       }
 
       const data = {
-        cpf: cpfecnpj.value,
+        cpf_cnpj: cpfecnpj.value,
         email: email.value,
-        name: nome.value,
+        full_name: nome.value,
         phone: celular.value,
         cep: cep.value,
-        cidade: addressData.cidade,
+        city: addressData.cidade,
         uf: addressData.uf,
-        store: selectedStore,
-        additionalInfo: {
-          selectedValue,
-          additionalInputValue,
-        },
+        missingstore: additionalInputValue,
+        selected_store: selectedStore,
       };
 
       const { url, options } = CUSTOMERS_POST(data);
@@ -69,6 +66,8 @@ const Formulario = () => {
 
       if (response.ok) {
         customerLogin(cpfecnpj.value);
+      } else {
+        // setError("Erro ao realizar cadastro. Tente novamente mais tarde.");
       }
     },
     [
@@ -77,7 +76,6 @@ const Formulario = () => {
       cep,
       addressData,
       selectedStore,
-      selectedValue,
       additionalInputValue,
       request,
       customerLogin,

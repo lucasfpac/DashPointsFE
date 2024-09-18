@@ -20,7 +20,7 @@ const FormRadio = ({
         additionalInput={{
           condition: "sim",
           placeholder: "Qual?",
-          value: additionalInputValue,
+          value: additionalInputValue.text,
         }}
         onAdditionalInputChange={setAdditionalInputValue}
       />
