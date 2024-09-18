@@ -1,14 +1,14 @@
-import React from 'react';
-import Header from '../Header/Header';
-import FormInput from '../Formulario/InputFields/FormInput';
-import { Button } from '../ui/button';
-import Footer from '../Footer/Footer';
-import useForm from '../Hooks/useForm';
-import { CustomerContext } from '@/CustomerContext';
-import Error from '../Helper/Error';
+import React from "react";
+import Header from "../Header/Header";
+import FormInput from "../Formulario/InputFields/FormInput";
+import { Button } from "../ui/button";
+import Footer from "../Footer/Footer";
+import useForm from "../Hooks/useForm";
+import { CustomerContext } from "@/CustomerContext";
+import Error from "../Helper/Error";
 
 const Cadastro = () => {
-  const cpfecnpj = useForm('cpfecnpj');
+  const cpfecnpj = useForm("cpfecnpj");
 
   const { customerLogin, error, loading } = React.useContext(CustomerContext);
 
@@ -21,28 +21,30 @@ const Cadastro = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className='flex flex-col min-h-screen'>
       <Header />
-      <main className="flex-grow flex items-center justify-center p-4">
+      <main className='flex-grow flex items-center justify-center p-4'>
         <form
-          className="w-full max-w-4xl bg-white p-6 rounded-lg shadow-md"
+          className='w-full max-w-4xl bg-white p-6 rounded-lg shadow-md'
           onSubmit={handleSubmit}
         >
           <FormInput
-            className="w-full p-3 border border-gray-300 rounded-md shadow-sm"
-            type="text"
-            id="cpfncnpj"
-            title="CPF/CNPJ"
-            placeholder="XXX.XXX.XXX-XX OU XX.XXX.XXX/0001-XX"
+            className='w-full p-3 border border-gray-300 rounded-md shadow-sm'
+            type='text'
+            id='cpfncnpj'
+            title='CPF/CNPJ'
+            placeholder='XXX.XXX.XXX-XX OU XX.XXX.XXX/0001-XX'
             {...cpfecnpj}
           />
-          <div className="flex justify-center items-center mt-10 flex-col">
-            {loading ? (
-              <Button disabled>Avançar</Button>
-            ) : (
-              <Button>Avançar</Button>
+          <div className='flex flex-col items-center mt-10'>
+            <Button disabled={loading} className='w-full max-w-xs'>
+              {loading ? "Carregando..." : "Avançar"}
+            </Button>
+            {error && (
+              <div aria-live='polite' className='mt-3'>
+                <Error error='CPF/CNPJ incorreto.' />
+              </div>
             )}
-            <Error error={error && 'CPF/CNPJ incorreto.'} />
           </div>
         </form>
       </main>
