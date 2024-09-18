@@ -10,8 +10,9 @@ import { Button } from "../ui/button";
 import { format } from "date-fns";
 
 const FormularioCompra = () => {
+  const today = new Date();
   const [selectedStore, setSelectedStore] = React.useState("");
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [selectedDate, setSelectedDate] = React.useState(today);
 
   const nf = useForm("number");
   const valor = useForm("number");
@@ -20,6 +21,7 @@ const FormularioCompra = () => {
 
   async function handleSubmit(event) {
     event.preventDefault();
+
     const formData = new FormData();
 
     formData.append("nf", nf.value);
@@ -48,7 +50,6 @@ const FormularioCompra = () => {
           title='Data da Compra'
           value={selectedDate}
           onChange={setSelectedDate}
-          error={error}
         />
         <br />
         <Button loading={loading}>Adicionar</Button>

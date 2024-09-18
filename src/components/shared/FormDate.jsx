@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 
-const FormDate = ({ name, title, error, onChange, value }) => {
+const FormDate = ({ name, title, onChange, value }) => {
   const today = new Date();
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(value || today);
@@ -53,7 +53,6 @@ const FormDate = ({ name, title, error, onChange, value }) => {
           />
         </PopoverContent>
       </Popover>
-      {error && <p className='mb-2 text-red-500'>{error}</p>}
     </div>
   );
 };
