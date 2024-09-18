@@ -1,27 +1,27 @@
-import React from 'react';
-import useForm from '../Hooks/useForm';
-import useFetch from '../Hooks/useFetch';
-import { CEP_GET, CUSTOMERS_POST } from '../../services/api';
-import FormInputFields from './InputFields/FormInputFields';
-import FormAddressFields from './AddressFields/FormAddressFields';
-import FormStoreSelect from './FormStoreSelect/FormStoreSelect';
-import FormConsentCheckboxes from './ConsentCheckboxes/FormConsentCheckboxes';
-import FormActions from './FormActions/FormActions';
-import FormRadio from './FormRadio/FormRadio';
-import { CustomerContext } from '@/CustomerContext';
+import React from "react";
+import useForm from "../Hooks/useForm";
+import useFetch from "../Hooks/useFetch";
+import { CEP_GET, CUSTOMERS_POST } from "../../services/api";
+import FormInputFields from "./InputFields/FormInputFields";
+import FormAddressFields from "./AddressFields/FormAddressFields";
+import FormStoreSelect from "./FormStoreSelect/FormStoreSelect";
+import FormConsentCheckboxes from "./ConsentCheckboxes/FormConsentCheckboxes";
+import FormActions from "./FormActions/FormActions";
+import FormRadio from "./FormRadio/FormRadio";
+import { CustomerContext } from "@/CustomerContext";
 
 const Formulario = () => {
-  const [cidade, setCidade] = React.useState('');
-  const [uf, setUf] = React.useState('');
-  const [selectedStore, setSelectedStore] = React.useState('');
-  const [selectedValue, setSelectedValue] = React.useState('');
-  const [additionalInputValue, setAdditionalInputValue] = React.useState('');
+  const [cidade, setCidade] = React.useState("");
+  const [uf, setUf] = React.useState("");
+  const [selectedStore, setSelectedStore] = React.useState("");
+  const [selectedValue, setSelectedValue] = React.useState("");
+  const [additionalInputValue, setAdditionalInputValue] = React.useState("");
 
-  const cpfecnpj = useForm('cpfecnpj');
-  const email = useForm('email');
-  const cep = useForm('cep');
-  const nome = useForm('');
-  const celular = useForm('number');
+  const cpfecnpj = useForm("cpfecnpj");
+  const email = useForm("email");
+  const cep = useForm("cep");
+  const nome = useForm("");
+  const celular = useForm("number");
 
   const { customerLogin } = React.useContext(CustomerContext);
   const { loading, error, request } = useFetch();
@@ -36,10 +36,10 @@ const Formulario = () => {
           setUf(json.uf);
           setCidade(json.localidade);
         } else {
-          cep.setError('Erro ao buscar dados para o CEP.');
+          cep.setError("Erro ao buscar dados para o CEP.");
         }
       } catch (e) {
-        cep.setError('Erro de rede ou servidor.');
+        cep.setError("Erro de rede ou servidor.");
       }
     }
   }
@@ -51,8 +51,10 @@ const Formulario = () => {
       email: email.value,
       address: cep.value,
       name: nome.value,
-      surname: nome.value,
       phone: celular.value,
+      cep: cep.value,
+      cidade: cidade,
+      uf: uf,
     };
 
     const { url, options } = CUSTOMERS_POST(data);
@@ -67,7 +69,7 @@ const Formulario = () => {
     <>
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-xl mx-auto p-6 bg-white rounded-lg shadow-lg grid grid-cols-2 gap-2"
+        className='w-full max-w-xl mx-auto p-6 bg-white rounded-lg shadow-lg grid grid-cols-2 gap-2'
       >
         <FormInputFields
           cpfecnpj={cpfecnpj}
@@ -87,7 +89,7 @@ const Formulario = () => {
           selectedStore={selectedStore}
           setSelectedStore={setSelectedStore}
         />
-        <div className="flex flex-col gap-2 col-span-2">
+        <div className='flex flex-col gap-2 col-span-2'>
           <FormRadio
             selectedValue={selectedValue}
             setSelectedValue={setSelectedValue}
