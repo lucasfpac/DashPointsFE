@@ -20,7 +20,7 @@ const Formulario = () => {
   const email = useForm("email");
   const cep = useForm("cep");
   const nome = useForm("");
-  const celular = useForm("number");
+  const celular = useForm("celular");
 
   const { customerLogin } = useContext(CustomerContext);
   const { loading, error, request } = useFetch();
@@ -50,16 +50,17 @@ const Formulario = () => {
       }
 
       const data = {
-        cpf_cnpj: cpfecnpj.value,
+        cpf_cnpj: cpfecnpj.rawValue,
         email: email.value,
         full_name: nome.value,
-        phone: celular.value,
-        cep: cep.value,
+        phone: celular.rawValue,
+        cep: cep.rawValue,
         city: addressData.cidade,
         uf: addressData.uf,
         missingstore: additionalInputValue,
         selected_store: selectedStore,
       };
+
       console.log(data);
 
       const { url, options } = CUSTOMERS_POST(data);
@@ -70,7 +71,7 @@ const Formulario = () => {
       }
 
       if (response && response.ok) {
-        customerLogin(cpfecnpj.value);
+        customerLogin(cpfecnpj.rawValue);
       }
     },
     [

@@ -38,7 +38,7 @@ const FormInputFields = ({ cpfecnpj, nome, email, celular }) => {
         type='text'
         name='celular'
         title='Celular'
-        placeholder='(XX) XXXXX-XXXX'
+        placeholder='+55 (XX) XXXXX-XXXX'
         error={celular.error}
         onChange={celular.onChange}
         onBlur={celular.onBlur}

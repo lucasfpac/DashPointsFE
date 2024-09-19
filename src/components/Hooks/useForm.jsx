@@ -1,5 +1,6 @@
 import React from "react";
 import useValidadeDocument from "./useValidadeDocument";
+import { formatCPFOrCNPJ, formatCEP, formatCelular } from "./useFormat";
 
 const types = {
   email: {
@@ -20,25 +21,33 @@ const types = {
     regex: /\d{5}-?\d{3}/,
     message: "Digite um CEP válido",
   },
+  celular: {
+    regex: /^\+\d{1,3}\s?\(\d{1,4}\)\s?(?:9\d{4}|\d{4})-?\d{4}$/,
+    message:
+      "Utilize um número de celular válido no formato +XX (XX) XXXXX-XXXX ou +XX (XX) XXXX-XXXX",
+  },
 };
 
 const useForm = (type) => {
-  const [value, setValue] = React.useState(type === "checkbox" ? false : "");
+  const [value, setValue] = React.useState("");
+  const [formattedValue, setFormattedValue] = React.useState("");
   const [error, setError] = React.useState(null);
   const { validateCPF, validateCNPJ } = useValidadeDocument();
 
+  const cleanValue = (value) => value.replace(/\D/g, "");
+
   function validate(value) {
-    if (type === false) return true;
+    if (!type || type === false) return true;
 
     if (type === "checkbox") return true;
 
     if (type === "cpfecnpj") {
-      const cleanedValue = value.replace(/\D/g, "");
-      if (cleanedValue.length === 11 && validateCPF(value)) {
+      const cleanedValue = cleanValue(value);
+      if (cleanedValue.length === 11 && validateCPF(cleanedValue)) {
         setError(null);
         return true;
       }
-      if (cleanedValue.length === 14 && validateCNPJ(value)) {
+      if (cleanedValue.length === 14 && validateCNPJ(cleanedValue)) {
         setError(null);
         return true;
       }
@@ -49,27 +58,43 @@ const useForm = (type) => {
     if (value.length === 0) {
       setError("Preencha um valor.");
       return false;
-    } else if (types[type] && !types[type].regex.test(value)) {
+    }
+
+    if (types[type] && !types[type].regex.test(value)) {
       setError(types[type].message);
       return false;
-    } else {
-      setError(null);
-      return true;
     }
+
+    setError(null);
+    return true;
   }
 
   function onChange({ target }) {
-    const { type, checked, value } = target;
-    if (error) validate(type === "checkbox" ? checked : value);
+    const { value } = target;
+
     if (type === "checkbox") {
-      setValue(checked);
+      setValue(value);
+    } else if (type === "cpfecnpj") {
+      const rawValue = cleanValue(value);
+      setValue(rawValue);
+      setFormattedValue(formatCPFOrCNPJ(rawValue));
+    } else if (type === "cep") {
+      const rawValue = cleanValue(value);
+      setValue(rawValue);
+      setFormattedValue(formatCEP(rawValue));
+    } else if (type === "celular") {
+      const rawValue = cleanValue(value);
+      setValue(rawValue);
+      setFormattedValue(formatCelular(rawValue));
     } else {
       setValue(value);
+      setFormattedValue(value);
     }
   }
 
   return {
-    value,
+    value: formattedValue || value,
+    rawValue: cleanValue(value),
     onChange,
     error,
     validate: () => validate(value),
