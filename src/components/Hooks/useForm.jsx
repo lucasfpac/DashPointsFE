@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useCallback } from "react";
 import useValidadeDocument from "./useValidadeDocument";
 import { formatCPFOrCNPJ, formatCEP, formatCelular } from "./useFormat";
 
@@ -28,75 +28,86 @@ const types = {
   },
 };
 
+const cleanValue = (value) => value.replace(/\D/g, "");
+
 const useForm = (type) => {
-  const [value, setValue] = React.useState("");
-  const [formattedValue, setFormattedValue] = React.useState("");
-  const [error, setError] = React.useState(null);
+  const [value, setValue] = useState("");
+  const [formattedValue, setFormattedValue] = useState("");
+  const [error, setError] = useState(null);
   const { validateCPF, validateCNPJ } = useValidadeDocument();
 
-  const cleanValue = (value) => value.replace(/\D/g, "");
+  const validate = useCallback(
+    (inputValue) => {
+      if (!type || type === "checkbox") return true;
 
-  function validate(value) {
-    if (!type || type === false) return true;
-    if (type === "checkbox") return true;
-    if (type === "cpfecnpj") {
-      const cleanedValue = cleanValue(value);
-      if (cleanedValue.length === 11 && validateCPF(cleanedValue)) {
-        setError(null);
-        return true;
+      const cleanedValue = cleanValue(inputValue);
+
+      if (type === "cpfecnpj") {
+        if (cleanedValue.length === 11 && validateCPF(cleanedValue)) {
+          setError(null);
+          return true;
+        }
+        if (cleanedValue.length === 14 && validateCNPJ(cleanedValue)) {
+          setError(null);
+          return true;
+        }
+        setError("CPF ou CNPJ inválido.");
+        return false;
       }
-      if (cleanedValue.length === 14 && validateCNPJ(cleanedValue)) {
-        setError(null);
-        return true;
+
+      if (inputValue.length === 0) {
+        setError("Preencha um valor.");
+        return false;
       }
-      setError("CPF ou CNPJ inválido.");
-      return false;
-    }
-    if (value.length === 0) {
-      setError("Preencha um valor.");
-      return false;
-    }
-    if (types[type] && !types[type].regex.test(value)) {
-      setError(types[type].message);
-      return false;
-    }
-    setError(null);
-    return true;
-  }
 
-  function onChange({ target }) {
-    const { value } = target;
-    if (type === "checkbox") {
-      setValue(value);
-    } else if (type === "cpfecnpj" || type === "cep" || type === "celular") {
-      handleInputChange(target, type);
-    } else {
-      setValue(value);
-      setFormattedValue(value);
-    }
-  }
+      if (types[type] && !types[type].regex.test(inputValue)) {
+        setError(types[type].message);
+        return false;
+      }
 
-  const handleInputChange = (inputField, inputType) => {
+      setError(null);
+      return true;
+    },
+    [type, validateCPF, validateCNPJ]
+  );
+
+  const handleInputChange = useCallback((inputField, inputType) => {
     let { value, selectionStart } = inputField;
-    let cleanValue = value;
-    if (inputType !== "email") {
-      cleanValue = value.replace(/\D/g, "");
-    }
-    let formattedValue = cleanValue;
+    let cleanValueStr = value.replace(/\D/g, "");
+    let formattedValueStr = cleanValueStr;
+
     if (inputType === "cpfecnpj") {
-      formattedValue = formatCPFOrCNPJ(cleanValue);
+      formattedValueStr = formatCPFOrCNPJ(cleanValueStr);
     } else if (inputType === "cep") {
-      formattedValue = formatCEP(cleanValue);
+      formattedValueStr = formatCEP(cleanValueStr);
     } else if (inputType === "celular") {
-      formattedValue = formatCelular(cleanValue);
+      formattedValueStr = formatCelular(cleanValueStr);
     }
-    const lengthDifference = formattedValue.length - value.length;
+
+    const lengthDifference = formattedValueStr.length - value.length;
     const newCursorPosition = selectionStart + lengthDifference;
-    inputField.value = formattedValue;
+
+    inputField.value = formattedValueStr;
     inputField.setSelectionRange(newCursorPosition, newCursorPosition);
-    setValue(cleanValue);
-    setFormattedValue(formattedValue);
-  };
+
+    setValue(cleanValueStr);
+    setFormattedValue(formattedValueStr);
+  }, []);
+
+  const onChange = useCallback(
+    ({ target }) => {
+      const { value } = target;
+      if (type === "checkbox") {
+        setValue(value);
+      } else if (["cpfecnpj", "cep", "celular"].includes(type)) {
+        handleInputChange(target, type);
+      } else {
+        setValue(value);
+        setFormattedValue(value);
+      }
+    },
+    [type, handleInputChange]
+  );
 
   return {
     value: formattedValue || value,
