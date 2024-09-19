@@ -56,7 +56,6 @@ export const formatCelular = (value) => {
     }
   }
 
-  // US number formatting
   if (countryCode === "1") {
     const areaCode = restOfNumber.slice(0, 3);
     const number = restOfNumber.slice(3);

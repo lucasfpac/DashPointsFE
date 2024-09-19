@@ -5,7 +5,7 @@ import { formatCPFOrCNPJ, formatCEP, formatCelular } from "./useFormat";
 const types = {
   email: {
     regex:
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     message: "Preencha um email válido",
   },
   number: {
@@ -22,7 +22,7 @@ const types = {
     message: "Digite um CEP válido",
   },
   celular: {
-    regex: /^\d{1,3}\d{10,11}$/,
+    regex: /^\+?[1-9]\d{1,14}$/,
     message:
       "Utilize um número de celular válido no formato +XX (XX) XXXXX-XXXX",
   },
@@ -73,7 +73,7 @@ const useForm = (type) => {
 
   const handleInputChange = useCallback((inputField, inputType) => {
     let { value, selectionStart } = inputField;
-    let cleanValueStr = value.replace(/\D/g, "");
+    let cleanValueStr = cleanValue(value);
     let formattedValueStr = cleanValueStr;
 
     if (inputType === "cpfecnpj") {
@@ -90,20 +90,33 @@ const useForm = (type) => {
     inputField.value = formattedValueStr;
     inputField.setSelectionRange(newCursorPosition, newCursorPosition);
 
-    setValue(cleanValueStr);
+    setValue(inputType === "celular" ? "+" + cleanValueStr : cleanValueStr);
     setFormattedValue(formattedValueStr);
   }, []);
 
   const onChange = useCallback(
-    ({ target }) => {
-      const { value } = target;
-      if (type === "checkbox") {
-        setValue(value);
-      } else if (["cpfecnpj", "cep", "celular"].includes(type)) {
-        handleInputChange(target, type);
-      } else {
-        setValue(value);
-        setFormattedValue(value);
+    (eventOrValue) => {
+      if (typeof eventOrValue === "string") {
+        if (type === "celular") {
+          const cleanedPhoneValue = cleanValue(eventOrValue);
+          setValue("+" + cleanedPhoneValue);
+          setFormattedValue(eventOrValue);
+        } else {
+          setValue(cleanValue(eventOrValue));
+          setFormattedValue(eventOrValue);
+        }
+      } else if (eventOrValue && eventOrValue.target) {
+        const { target } = eventOrValue;
+        const { value } = target;
+
+        if (type === "checkbox") {
+          setValue(value);
+        } else if (["cpfecnpj", "cep", "celular"].includes(type)) {
+          handleInputChange(target, type);
+        } else {
+          setValue(value);
+          setFormattedValue(value);
+        }
       }
     },
     [type, handleInputChange]
@@ -111,7 +124,7 @@ const useForm = (type) => {
 
   return {
     value: formattedValue || value,
-    rawValue: cleanValue(value),
+    rawValue: value,
     onChange,
     error,
     validate: () => validate(value),

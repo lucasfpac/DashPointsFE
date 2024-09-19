@@ -53,7 +53,7 @@ const Formulario = () => {
         cpf_cnpj: cpfecnpj.rawValue,
         email: email.value,
         full_name: nome.value,
-        phone: celular.rawValue,
+        phone: celular.rawValue || "",
         cep: cep.rawValue,
         city: addressData.cidade,
         uf: addressData.uf,

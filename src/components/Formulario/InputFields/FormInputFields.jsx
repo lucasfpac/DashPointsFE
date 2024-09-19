@@ -1,5 +1,6 @@
 import React from "react";
 import FormInput from "./FormInput";
+import FormPhoneField from "../FormPhoneField/FormPhoneField";
 
 const FormInputFields = ({ cpfecnpj, nome, email, celular }) => {
   return (
@@ -34,15 +35,13 @@ const FormInputFields = ({ cpfecnpj, nome, email, celular }) => {
         onBlur={email.onBlur}
         value={email.value}
       />
-      <FormInput
-        type='text'
+      <FormPhoneField
         name='celular'
         title='Celular'
-        placeholder='+55 (XX) XXXXX-XXXX'
-        error={celular.error}
+        value={celular.value}
         onChange={celular.onChange}
         onBlur={celular.onBlur}
-        value={celular.value}
+        error={celular.error}
       />
     </>
   );
