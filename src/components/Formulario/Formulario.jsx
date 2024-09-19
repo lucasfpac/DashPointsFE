@@ -65,10 +65,12 @@ const Formulario = () => {
       const { url, options } = CUSTOMERS_POST(data);
       const { response } = await request(url, options);
 
-      if (response.ok) {
+      if (response && !response.ok) {
+        return;
+      }
+
+      if (response && response.ok) {
         customerLogin(cpfecnpj.value);
-      } else {
-        // setError("Erro ao realizar cadastro. Tente novamente mais tarde.");
       }
     },
     [

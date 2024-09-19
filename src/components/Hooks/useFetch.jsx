@@ -13,7 +13,25 @@ const useFetch = () => {
       setLoading(true);
       response = await fetch(url, options);
       json = await response.json();
-      if (response.ok === false) throw new Error(json.message);
+      if (!response.ok) {
+        if (response.status === 409) {
+          throw new Error(
+            "Usuário já existe. Por favor, use CPF/CNPJ diferente."
+          );
+        } else if (response.status === 400) {
+          throw new Error(
+            json.message || "Solicitação inválida. Verifique seus dados."
+          );
+        } else if (response.status === 500) {
+          throw new Error(
+            "Erro no servidor. Por favor, tente novamente mais tarde."
+          );
+        } else {
+          throw new Error(
+            json.message || "Ocorreu um erro. Por favor, tente novamente."
+          );
+        }
+      }
     } catch (err) {
       json = null;
       setError(err.message);

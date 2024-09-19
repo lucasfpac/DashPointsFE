@@ -6,7 +6,7 @@ const ModalRegulamento = () => {
       <h2 className='text-xl font-bold mb-4 text-black text-center'>
         R E G U L A M E N T O
       </h2>
-      <hr class='h-px my-8 bg-gray-200 border-2 dark:bg-gray-700' />
+      <hr className='h-px my-8 bg-gray-200 border-2 dark:bg-gray-700' />
       <h3 className='text-base font-bold mb-4 text-black text-center mt-2'>
         PROMOÇÃO “COMPROU-GANHOU”
       </h3>
