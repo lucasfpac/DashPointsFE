@@ -65,15 +65,18 @@ const useForm = (type) => {
   }
 
   function onChange({ target }) {
-    const { value, selectionStart } = target;
+    const { value } = target;
     if (type === "checkbox") {
       setValue(value);
+    } else if (type === "cpfecnpj" || type === "cep" || type === "celular") {
+      handleInputChange(target, type);
     } else {
-      handleInputChangeWithBackspace(target, type);
+      setValue(value);
+      setFormattedValue(value);
     }
   }
 
-  const handleInputChangeWithBackspace = (inputField, inputType) => {
+  const handleInputChange = (inputField, inputType) => {
     let { value, selectionStart } = inputField;
     let cleanValue = value;
     if (inputType !== "email") {

@@ -88,6 +88,14 @@ const Formulario = () => {
     ]
   );
 
+  const setCidade = (cidade) => {
+    setAddressData((prevData) => ({ ...prevData, cidade }));
+  };
+
+  const setUf = (uf) => {
+    setAddressData((prevData) => ({ ...prevData, uf }));
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -105,6 +113,8 @@ const Formulario = () => {
         handleCepBlur={handleCepBlur}
         cidade={addressData.cidade}
         uf={addressData.uf}
+        setCidade={setCidade}
+        setUf={setUf}
       />
 
       <FormStoreSelect
