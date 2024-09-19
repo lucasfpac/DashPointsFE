@@ -38,7 +38,9 @@ const useForm = (type) => {
 
   function validate(value) {
     if (!type || type === false) return true;
+
     if (type === "checkbox") return true;
+
     if (type === "cpfecnpj") {
       const cleanedValue = cleanValue(value);
       if (cleanedValue.length === 11 && validateCPF(cleanedValue)) {
@@ -52,48 +54,43 @@ const useForm = (type) => {
       setError("CPF ou CNPJ inválido.");
       return false;
     }
+
     if (value.length === 0) {
       setError("Preencha um valor.");
       return false;
     }
+
     if (types[type] && !types[type].regex.test(value)) {
       setError(types[type].message);
       return false;
     }
+
     setError(null);
     return true;
   }
 
   function onChange({ target }) {
-    const { value, selectionStart } = target;
+    const { value } = target;
+
     if (type === "checkbox") {
       setValue(value);
+    } else if (type === "cpfecnpj") {
+      const rawValue = cleanValue(value);
+      setValue(rawValue);
+      setFormattedValue(formatCPFOrCNPJ(rawValue));
+    } else if (type === "cep") {
+      const rawValue = cleanValue(value);
+      setValue(rawValue);
+      setFormattedValue(formatCEP(rawValue));
+    } else if (type === "celular") {
+      const rawValue = cleanValue(value);
+      setValue(rawValue);
+      setFormattedValue(formatCelular(rawValue));
     } else {
-      handleInputChangeWithBackspace(target, type);
+      setValue(value);
+      setFormattedValue(value);
     }
   }
-
-  const handleInputChangeWithBackspace = (inputField, inputType) => {
-    let { value, selectionStart } = inputField;
-    let cleanValue = value;
-    if (inputType !== "email") {
-      cleanValue = value.replace(/\D/g, "");
-    }
-    let formattedValue = cleanValue;
-    if (inputType === "cpfecnpj") {
-      formattedValue = formatCPFOrCNPJ(cleanValue);
-    } else if (inputType === "cep") {
-      formattedValue = formatCEP(cleanValue);
-    } else if (inputType === "celular") {
-      formattedValue = formatCelular(cleanValue);
-    }
-    const lengthDifference = formattedValue.length - value.length;
-    const newCursorPosition = selectionStart + lengthDifference;
-    inputField.value = formattedValue;
-    inputField.setSelectionRange(newCursorPosition, newCursorPosition);
-    setValue(cleanValue);
-    setFormattedValue(formattedValue);
-  };
 
   return {
     value: formattedValue || value,

@@ -29,39 +29,68 @@ export const formatCelular = (value) => {
   let restOfNumber = "";
 
   if (cleanValue.startsWith("55")) {
-    countryCode = "+55";
+    countryCode = "55";
     restOfNumber = cleanValue.slice(2);
+  } else if (cleanValue.startsWith("1")) {
+    countryCode = "1";
+    restOfNumber = cleanValue.slice(1);
   } else {
-    countryCode = `+${cleanValue.slice(0, cleanValue.indexOf("("))}`;
-    restOfNumber = cleanValue.slice(cleanValue.indexOf("("));
+    countryCode = cleanValue.slice(0, cleanValue.length - 10);
+    restOfNumber = cleanValue.slice(countryCode.length);
   }
 
-  if (countryCode === "+55") {
-    if (restOfNumber.length === 11) {
-      return `${countryCode} (${restOfNumber.slice(0, 2)}) ${restOfNumber.slice(
-        2,
-        7
-      )}-${restOfNumber.slice(7)}`;
-    } else if (restOfNumber.length === 10) {
-      return `${countryCode} (${restOfNumber.slice(0, 2)}) ${restOfNumber.slice(
-        2,
-        6
-      )}-${restOfNumber.slice(6)}`;
+  if (countryCode === "55") {
+    const areaCode = restOfNumber.slice(0, 2);
+    const number = restOfNumber.slice(2);
+
+    if (number.length === 9) {
+      return `+${countryCode} (${areaCode}) ${number.slice(
+        0,
+        5
+      )}-${number.slice(5)}`;
+    } else if (number.length === 8) {
+      return `+${countryCode} (${areaCode}) ${number.slice(
+        0,
+        4
+      )}-${number.slice(4)}`;
+    }
+  }
+
+  // US number formatting
+  if (countryCode === "1") {
+    const areaCode = restOfNumber.slice(0, 3);
+    const number = restOfNumber.slice(3);
+
+    if (number.length > 7) {
+      return `+${countryCode} (${areaCode}) ${number.slice(
+        0,
+        3
+      )}-${number.slice(3, 7)}-${number.slice(7, 11)}`;
+    } else if (number.length > 3) {
+      return `+${countryCode} (${areaCode}) ${number.slice(
+        0,
+        3
+      )}-${number.slice(3)}`;
+    } else {
+      return `+${countryCode} (${areaCode}) ${number}`;
     }
   }
 
   if (restOfNumber.length <= 3) {
-    return `${countryCode} (${restOfNumber}`;
-  }
-
-  if (restOfNumber.length <= 6) {
-    return `${countryCode} (${restOfNumber.slice(0, 3)}) ${restOfNumber.slice(
+    return `+${countryCode} (${restOfNumber}`;
+  } else if (restOfNumber.length <= 6) {
+    return `+${countryCode} (${restOfNumber.slice(0, 3)}) ${restOfNumber.slice(
       3
     )}`;
+  } else if (restOfNumber.length <= 10) {
+    return `+${countryCode} (${restOfNumber.slice(0, 3)}) ${restOfNumber.slice(
+      3,
+      6
+    )}-${restOfNumber.slice(6)}`;
+  } else {
+    return `+${countryCode} (${restOfNumber.slice(0, 3)}) ${restOfNumber.slice(
+      3,
+      7
+    )}-${restOfNumber.slice(7, 11)}`;
   }
-
-  return `${countryCode} (${restOfNumber.slice(0, 3)}) ${restOfNumber.slice(
-    3,
-    7
-  )}-${restOfNumber.slice(7, 11)}`;
 };
