@@ -1,6 +1,6 @@
 import React from "react";
 import PhoneInput from "react-phone-number-input";
-// import "react-phone-number-input/style.css";
+import "react-phone-number-input/style.css";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 

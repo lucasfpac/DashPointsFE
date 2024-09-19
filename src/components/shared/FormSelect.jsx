@@ -20,8 +20,8 @@ const FormSelect = ({ label, options, placeholder, onChange, value }) => {
         <SelectContent className='w-full'>
           <SelectGroup>
             {options.map((option) => (
-              <SelectItem key={option} value={option}>
-                {option}
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
               </SelectItem>
             ))}
           </SelectGroup>
