@@ -49,16 +49,25 @@ const Formulario = () => {
         return;
       }
 
+      function capitalize(str) {
+        return str
+          .split(" ")
+          .map(
+            (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+          )
+          .join(" ");
+      }
+
       const data = {
         cpf_cnpj: cpfecnpj.rawValue,
-        email: email.value,
-        full_name: nome.value,
+        email: email.value.toLowerCase(),
+        full_name: capitalize(nome.value),
         phone: celular.rawValue || "",
         cep: cep.rawValue,
         city: addressData.cidade,
         uf: addressData.uf,
         missingstore: additionalInputValue,
-        selected_store: selectedStore,
+        selected_store: Number(selectedStore),
       };
 
       console.log(data);
