@@ -31,7 +31,7 @@ const FormularioCompra = () => {
     formData.append("value", valor.value);
     formData.append("store", selectedStore);
 
-    const { url, options } = COMPRAS_POST(formData, data.cpf_cnpj);
+    const { url, options } = COMPRAS_POST(formData, data.id);
     request(url, options);
   }
 

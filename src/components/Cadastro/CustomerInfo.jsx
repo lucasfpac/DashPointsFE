@@ -13,8 +13,8 @@ const CustomerInfo = () => {
   const { data } = useContext(CustomerContext);
 
   const totalCompras =
-    data && data.compras
-      ? data.compras.reduce((acc, compra) => acc + compra.valor, 0)
+    data && data.purchases
+      ? data.purchases.reduce((acc, compra) => acc + compra.valor, 0)
       : 0;
 
   const targetValue = 2000;
