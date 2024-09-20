@@ -23,11 +23,11 @@ const FormStoreSelect = ({ selectedStore, setSelectedStore }) => {
         <FormSelect
           label='Selecione uma loja'
           options={stores.results.map((store) => ({
-            value: store.id,
+            value: store.id.toString(),
             label: store.name,
           }))}
           placeholder='Escolha uma loja'
-          value={selectedStore}
+          value={selectedStore?.toString()}
           onChange={setSelectedStore}
         />
       )}
