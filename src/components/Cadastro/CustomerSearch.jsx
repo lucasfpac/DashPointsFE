@@ -16,7 +16,7 @@ const Cadastro = () => {
     event.preventDefault();
 
     if (cpfecnpj.validate()) {
-      customerLogin(cpfecnpj.value);
+      customerLogin(cpfecnpj.rawValue);
     }
   }
 

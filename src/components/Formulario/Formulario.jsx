@@ -70,8 +70,6 @@ const Formulario = () => {
         selected_store: Number(selectedStore),
       };
 
-      console.log(data);
-
       const { url, options } = CUSTOMERS_POST(data);
       const { response } = await request(url, options);
 

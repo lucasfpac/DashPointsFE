@@ -65,7 +65,7 @@ export function CUSTOMERS_POST(body) {
 
 export function COMPRAS_POST(formData, cpfecnpj) {
   return {
-    url: API_URL + `/compras/${cpfecnpj}`,
+    url: API_URL + `/purchases/${cpfecnpj}`,
     options: {
       method: "POST",
       headers: {

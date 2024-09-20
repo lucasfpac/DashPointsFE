@@ -26,10 +26,10 @@ const FormularioCompra = () => {
 
     const formData = new FormData();
 
-    formData.append("nf", nf.value);
-    formData.append("data", format(selectedDate, "dd-MM-yyyy"));
-    formData.append("valor", valor.value);
-    formData.append("loja", selectedStore);
+    formData.append("invoice", nf.value);
+    formData.append("date", format(selectedDate, "dd-MM-yyyy"));
+    formData.append("value", valor.value);
+    formData.append("store", selectedStore);
 
     const { url, options } = COMPRAS_POST(formData, data.cpf_cnpj);
     request(url, options);
