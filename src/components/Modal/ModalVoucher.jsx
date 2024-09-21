@@ -41,7 +41,7 @@ const VoucherModal = ({ isOpen, onClose, customerData, totalCompras }) => {
                 <strong>CPF:</strong> {customerData.cpf}
               </p>
               <p>
-                <strong>Total de Compras:</strong> R$ {totalCompras.toFixed(2)}
+                <strong>Total de Compras:</strong> R$ {totalCompras}
               </p>
             </div>
             <div className="text-center text-sm">

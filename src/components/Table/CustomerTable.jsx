@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -9,15 +9,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { CustomerContext } from '@/CustomerContext';
 import PrintLayout from '../Voucher/VoucherPrintLayout';
 import { Button } from '../ui/button';
 
-const CustomerTable = ({ totalCompras }) => {
-  const { data } = useContext(CustomerContext);
-
-  const customer = data[0];
-
+const CustomerTable = ({
+  totalCompras,
+  purchases,
+  customerData,
+  loading,
+  error,
+}) => {
   const openPrintWindow = (invoice, customer) => {
     const printWindow = window.open('', '', 'width=300,height=500');
 
@@ -34,8 +35,16 @@ const CustomerTable = ({ totalCompras }) => {
     };
   };
 
-  if (!data || !data[0] || !data[0].compras) {
+  if (loading) {
     return <p>Carregando dados...</p>;
+  }
+
+  if (error) {
+    return <p>Erro ao carregar dados: {error}</p>;
+  }
+
+  if (!purchases || purchases.length === 0) {
+    return <p>Não há compras disponíveis.</p>;
   }
 
   return (
@@ -51,15 +60,15 @@ const CustomerTable = ({ totalCompras }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data[0].compras.map((invoice) => (
-            <TableRow key={invoice.nf}>
-              <TableCell className="font-medium">{invoice.nf}</TableCell>
-              <TableCell>{invoice.loja}</TableCell>
+          {purchases.map((purchase) => (
+            <TableRow key={purchase.id}>
+              <TableCell className="font-medium">{purchase.invoice}</TableCell>
+              <TableCell>{purchase.store}</TableCell>
               <TableCell className="text-right">
-                R$ {invoice.valor.toFixed(2)}
+                R$ {Number(purchase.value).toFixed(2)}
               </TableCell>
               <TableCell className="text-right">
-                <Button onClick={() => openPrintWindow(invoice, customer)}>
+                <Button onClick={() => openPrintWindow(purchase, customerData)}>
                   Imprimir Voucher
                 </Button>
               </TableCell>
@@ -70,7 +79,7 @@ const CustomerTable = ({ totalCompras }) => {
           <TableRow>
             <TableCell colSpan={3}>Total</TableCell>
             <TableCell className="text-right">
-              R$ {totalCompras.toFixed(2)}
+              R$ {Number(totalCompras).toFixed(2)}
             </TableCell>
           </TableRow>
         </TableFooter>

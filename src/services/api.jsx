@@ -50,7 +50,7 @@ export function COMPRAS_POST(formData) {
 
 export function COMPRAS_GET(id) {
   return {
-    url: API_URL + `/purchases/customer/?customer=${id}`,
+    url: API_URL + `/purchases/?customer=${id}`,
     options: {
       method: 'GET',
       headers: {

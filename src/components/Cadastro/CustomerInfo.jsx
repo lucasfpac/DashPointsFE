@@ -9,12 +9,16 @@ import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
 const CustomerInfo = () => {
-  const { loading } = useFetch();
-  const { data } = useContext(CustomerContext);
+  const {
+    data: customerData,
+    purchases,
+    loading,
+    error,
+  } = useContext(CustomerContext);
 
   const totalCompras =
-    data && data.purchases
-      ? data.purchases.reduce((acc, compra) => acc + compra.valor, 0)
+    purchases && purchases.length > 0
+      ? purchases.reduce((acc, compra) => acc + Number(compra.value), 0)
       : 0;
 
   const targetValue = 2000;
@@ -29,12 +33,20 @@ const CustomerInfo = () => {
           title="Compras do Cliente"
           paragraph="Verifique as compras e imprima o comprovante"
         />
-        <p className="text-center font-bold">CPF: {data.cpf_cnpj}</p>
+        <p className="text-center font-bold">
+          CPF: {customerData ? customerData.cpf_cnpj : 'Loading...'}
+        </p>
         <hr />
         <br />
         <div className="flex flex-col flex-1 justify-center items-center w-full">
           <div className="w-full max-w-full md:max-w-4xl p-2">
-            <CustomerTable totalCompras={totalCompras} />
+            <CustomerTable
+              purchases={purchases}
+              totalCompras={totalCompras}
+              customerData={customerData}
+              loading={loading}
+              error={error}
+            />
             <FormSummary totalCompras={totalCompras} />
             <FormButtons
               loading={loading ? loading : undefined}
