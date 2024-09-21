@@ -24,6 +24,13 @@ const VoucherModal = ({ isOpen, onClose, customerData, totalCompras }) => {
     document.head.removeChild(style);
   };
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(value);
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="p-6 bg-white rounded-lg">
@@ -41,7 +48,8 @@ const VoucherModal = ({ isOpen, onClose, customerData, totalCompras }) => {
                 <strong>CPF:</strong> {customerData.cpf}
               </p>
               <p>
-                <strong>Total de Compras:</strong> R$ {totalCompras}
+                <strong>Total de Compras:</strong>{' '}
+                {formatCurrency(totalCompras)}
               </p>
             </div>
             <div className="text-center text-sm">

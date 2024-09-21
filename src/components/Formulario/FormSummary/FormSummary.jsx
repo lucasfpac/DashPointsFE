@@ -5,26 +5,21 @@ const FormSummary = ({ totalCompras }) => {
 
   const saldoRestante = META_BRINDE - totalCompras;
 
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(value);
+  };
+
   return (
     <div className="grid justify-center items-center mt-10">
       <p className="font-bold">
-        SUAS NOTAS SOMAM:{' '}
-        <span>
-          {totalCompras.toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-          })}
-        </span>
+        SUAS NOTAS SOMAM: <span>{formatCurrency(totalCompras)}</span>
       </p>
       <p className="font-bold">
-        FALTAM:{' '}
-        <span>
-          {saldoRestante.toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-          })}
-        </span>{' '}
-        PARA CONQUISTAR SEU BRINDE
+        FALTAM: <span>{formatCurrency(saldoRestante)}</span> PARA CONQUISTAR SEU
+        BRINDE
       </p>
     </div>
   );

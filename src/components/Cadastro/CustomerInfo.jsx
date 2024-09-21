@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import Title from '../Title/Title';
 import CustomerTable from '../Table/CustomerTable';
 import { CustomerContext } from '@/CustomerContext';
-import useFetch from '../Hooks/useFetch';
 import FormSummary from '../Formulario/FormSummary/FormSummary';
 import FormButtons from '../Formulario/FormButtons/FormButtons';
 import Header from '../Header/Header';

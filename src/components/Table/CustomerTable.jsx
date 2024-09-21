@@ -12,6 +12,13 @@ import {
 import PrintLayout from '../Voucher/VoucherPrintLayout';
 import { Button } from '../ui/button';
 
+const formatCurrency = (value) => {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(value);
+};
+
 const CustomerTable = ({
   totalCompras,
   purchases,
@@ -65,7 +72,7 @@ const CustomerTable = ({
               <TableCell className="font-medium">{purchase.invoice}</TableCell>
               <TableCell>{purchase.store}</TableCell>
               <TableCell className="text-right">
-                R$ {Number(purchase.value).toFixed(2)}
+                {formatCurrency(purchase.value)}{' '}
               </TableCell>
               <TableCell className="text-right">
                 <Button onClick={() => openPrintWindow(purchase, customerData)}>
@@ -79,7 +86,7 @@ const CustomerTable = ({
           <TableRow>
             <TableCell colSpan={3}>Total</TableCell>
             <TableCell className="text-right">
-              R$ {Number(totalCompras).toFixed(2)}
+              {formatCurrency(totalCompras)}
             </TableCell>
           </TableRow>
         </TableFooter>

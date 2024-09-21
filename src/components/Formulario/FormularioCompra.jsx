@@ -17,7 +17,7 @@ const FormularioCompra = ({ onClose }) => {
   const { data } = React.useContext(CustomerContext);
 
   const nf = useForm('number');
-  const valor = useForm('number');
+  const valor = useForm('currency');
 
   const { error, loading, request } = useFetch();
 
@@ -28,7 +28,7 @@ const FormularioCompra = ({ onClose }) => {
 
     formData.append('invoice', Number(nf.value));
     formData.append('date', format(selectedDate, 'yyyy-MM-dd'));
-    formData.append('value', Number(valor.value));
+    formData.append('value', valor.decimalString);
     formData.append('store', Number(selectedStore));
     formData.append('customer', Number(data.id));
 
