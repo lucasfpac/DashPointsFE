@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
-import { Button } from "../../ui/button";
-import ModalFormCompra from "@/components/Modal/ModalFormCompra";
-import Modal from "@/components/Modal/Modal";
-import VoucherModal from "@/components/Modal/ModalVoucher";
-import { CustomerContext } from "@/CustomerContext";
+import React, { useContext } from 'react';
+import { Button } from '../../ui/button';
+import ModalFormCompra from '@/components/Modal/ModalFormCompra';
+import Modal from '@/components/Modal/Modal';
+import VoucherModal from '@/components/Modal/ModalVoucher';
+import { CustomerContext } from '@/CustomerContext';
 
 const FormButtons = ({ loading, totalCompras, targetValue }) => {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -19,10 +19,10 @@ const FormButtons = ({ loading, totalCompras, targetValue }) => {
   const isTargetReached = totalCompras >= targetValue;
 
   return (
-    <div className='flex justify-center items-center mt-8 gap-10'>
+    <div className="flex justify-center items-center mt-8 gap-10">
       <Button onClick={openModal}>Adicionar Compra</Button>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <ModalFormCompra />
+        <ModalFormCompra onClose={closeModal} />
       </Modal>
       {loading ? (
         <Button disabled>Finalizar</Button>

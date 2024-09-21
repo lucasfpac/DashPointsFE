@@ -10,7 +10,7 @@ import { Button } from '../ui/button';
 import { format } from 'date-fns';
 import { CustomerContext } from '@/CustomerContext';
 
-const FormularioCompra = () => {
+const FormularioCompra = ({ onClose }) => {
   const today = new Date();
   const [selectedStore, setSelectedStore] = React.useState('');
   const [selectedDate, setSelectedDate] = React.useState(today);
@@ -23,16 +23,17 @@ const FormularioCompra = () => {
 
   async function handleSubmit(event) {
     event.preventDefault();
+
     const formData = new FormData();
 
     formData.append('invoice', Number(nf.value));
     formData.append('date', format(selectedDate, 'yyyy-MM-dd'));
     formData.append('value', Number(valor.value));
-    formData.append('store', selectedStore);
+    formData.append('store', Number(selectedStore));
     formData.append('customer', Number(data.id));
 
     const { url, options } = COMPRAS_POST(formData);
-    request(url, options);
+    const { response } = await request(url, options);
     if (response && response.ok) {
       onClose();
     }
