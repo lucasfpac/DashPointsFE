@@ -24,9 +24,7 @@ const CustomerInfo = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div>
-        <Header />
-      </div>
+      <Header />
       <main className="flex-1 justify-center items-center w-full">
         <Title
           title="Compras do Cliente"
@@ -55,9 +53,7 @@ const CustomerInfo = () => {
           </div>
         </div>
       </main>
-      <div>
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };

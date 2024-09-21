@@ -12,11 +12,16 @@ import {
 import PrintLayout from '../Voucher/VoucherPrintLayout';
 import { Button } from '../ui/button';
 
-const formatCurrency = (value) => {
+export const formatCurrency = (value) => {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   }).format(value);
+};
+
+const formatDate = (dateString) => {
+  const [year, month, day] = dateString.split('-');
+  return `${day}/${month}/${year}`;
 };
 
 const CustomerTable = ({
@@ -27,9 +32,13 @@ const CustomerTable = ({
   error,
 }) => {
   const openPrintWindow = (invoice, customer) => {
+    const purchase = purchases.find((p) => p.invoice === invoice);
+    if (!purchase) {
+      alert('Compra não encontrada.');
+      return;
+    }
     const printWindow = window.open('', '', 'width=300,height=500');
-
-    const content = PrintLayout({ invoice, customer });
+    const content = PrintLayout({ purchase, customer });
 
     printWindow.document.open();
     printWindow.document.write(content);
@@ -62,6 +71,7 @@ const CustomerTable = ({
           <TableRow>
             <TableHead className="w-[100px]">NF</TableHead>
             <TableHead>Loja</TableHead>
+            <TableHead>Data</TableHead>
             <TableHead className="text-right">Valor</TableHead>
             <TableHead className="text-right">Ações</TableHead>
           </TableRow>
@@ -71,11 +81,16 @@ const CustomerTable = ({
             <TableRow key={purchase.id}>
               <TableCell className="font-medium">{purchase.invoice}</TableCell>
               <TableCell>{purchase.store}</TableCell>
+              <TableCell>{formatDate(purchase.date)}</TableCell>
               <TableCell className="text-right">
                 {formatCurrency(purchase.value)}{' '}
               </TableCell>
               <TableCell className="text-right">
-                <Button onClick={() => openPrintWindow(purchase, customerData)}>
+                <Button
+                  onClick={() =>
+                    openPrintWindow(purchase.invoice, customerData)
+                  }
+                >
                   Imprimir Voucher
                 </Button>
               </TableCell>

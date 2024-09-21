@@ -7,9 +7,9 @@ export const CustomerContext = React.createContext();
 export const CustomerStorage = ({ children }) => {
   const [data, setData] = React.useState(null);
   const [purchases, setPurchases] = React.useState([]);
-  const [login, setLogin] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
+  const [login, setLogin] = React.useState(false);
   const navigate = useNavigate();
 
   const customerLogout = React.useCallback(async function () {
@@ -31,7 +31,7 @@ export const CustomerStorage = ({ children }) => {
 
       setData(json);
       setLogin(true);
-      customerPurchases(json.id);
+      await customerPurchases(json.id);
       navigate('/cadastro/compra');
     } catch (err) {
       console.log('Erro no customerLogin:', err.message);
@@ -42,14 +42,27 @@ export const CustomerStorage = ({ children }) => {
     }
   }
 
-  async function customerPurchases(customerId) {
+  async function customerPurchases(
+    customerId,
+    pageUrl = null,
+    accumulatedPurchases = []
+  ) {
     try {
       setLoading(true);
-      const { url, options } = COMPRAS_GET(customerId);
+      const { url, options } = pageUrl
+        ? { url: pageUrl, options: {} }
+        : COMPRAS_GET(customerId);
       const response = await fetch(url, options);
       if (!response.ok) throw new Error(`Error: ${response.statusText}`);
       const json = await response.json();
-      setPurchases(json.results);
+
+      const updatedPurchases = [...accumulatedPurchases, ...json.results];
+
+      if (json.next) {
+        await customerPurchases(customerId, json.next, updatedPurchases);
+      } else {
+        setPurchases(updatedPurchases);
+      }
     } catch (err) {
       console.log('Erro ao buscar compras:', err.message);
       setError(err.message);
@@ -63,10 +76,11 @@ export const CustomerStorage = ({ children }) => {
       value={{
         customerLogin,
         customerLogout,
+        customerPurchases,
         data,
         purchases,
-        error,
         loading,
+        error,
         login,
       }}
     >
