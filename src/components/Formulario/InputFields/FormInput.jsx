@@ -26,6 +26,7 @@ const FormInput = ({
         onBlur={onBlur}
         onChange={onChange}
         className='w-full mt-2'
+        autoComplete='off'
       />
       {error && <p className='mb-2 text-red-500'>{error}</p>}
     </div>

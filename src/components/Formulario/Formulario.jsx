@@ -106,7 +106,7 @@ const Formulario = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className='w-full max-w-xl mx-auto p-6 bg-white rounded-lg shadow-lg grid grid-cols-2 gap-2'
+      className='w-full max-w-xl mx-auto p-6 bg-white rounded-lg shadow-lg'
     >
       <FormInputFields
         cpfecnpj={cpfecnpj}
@@ -136,7 +136,7 @@ const Formulario = () => {
           additionalInputValue={additionalInputValue}
           setAdditionalInputValue={setAdditionalInputValue}
         />
-        <FormConsentCheckboxes />
+        <FormConsentCheckboxes className='' />
 
         <FormActions loading={loading} error={error} />
       </div>
