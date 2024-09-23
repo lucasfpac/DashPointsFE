@@ -1,8 +1,9 @@
-import React from 'react';
-import { formatCurrency } from '../Table/CustomerTable';
+import React from "react";
+import { formatCurrency } from "../Table/CustomerTable";
+import { formatCPFOrCNPJ } from "../Hooks/useFormat";
 
 const formatDate = (dateString) => {
-  const [year, month, day] = dateString.split('-');
+  const [year, month, day] = dateString.split("-");
   return `${day}/${month}/${year}`;
 };
 
@@ -14,22 +15,22 @@ const VoucherContent = ({ purchase, customer }) => {
   return (
     <div>
       <h1>VOUCHER PARA TROCA</h1>
-      <p>Emitido em {formatDate(purchase.date) || 'Data não disponível'}</p>
+      <p>Emitido em {formatDate(purchase.date) || "Data não disponível"}</p>
       <hr />
-      <div className="section">
+      <div className='section'>
         <p>
           <strong>Dados Pessoais:</strong>
         </p>
-        <p>CPF/CNPJ: {customer.cpf_cnpj}</p>
-        <p>Nome: {customer.name}</p>
+        <p>CPF/CNPJ: {formatCPFOrCNPJ(customer.cpf_cnpj)}</p>
+        <p>Nome: {customer.full_name}</p>
         <p>E-mail: {customer.email}</p>
       </div>
       <hr />
-      <div className="section">
+      <div className='section'>
         <p>
           <strong>Dados da Compra:</strong>
         </p>
-        <p>Loja: {purchase.store}</p>
+        <p>Loja: {purchase.store_name}</p>
         <p>Número do pedido / NF: {purchase.invoice}</p>
         <p>Valor da Nf: {formatCurrency(purchase.value)}</p>
       </div>
@@ -38,7 +39,7 @@ const VoucherContent = ({ purchase, customer }) => {
         <strong>Valor total: {formatCurrency(purchase.value)}</strong>
       </p>
       <p>Procure o espaço concierge e informe este</p>
-      <div className="center">
+      <div className='center'>
         <p>CÓDIGO DE CONFIRMAÇÃO</p>
         <p>{purchase.id}</p>
       </div>
