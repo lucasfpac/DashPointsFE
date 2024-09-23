@@ -1,6 +1,6 @@
-import React from 'react';
-import { COMPRAS_GET, CUSTOMERS_GET } from './services/api';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { COMPRAS_GET, CUSTOMERS_GET } from "./services/api";
+import { useNavigate } from "react-router-dom";
 
 export const CustomerContext = React.createContext();
 
@@ -32,9 +32,9 @@ export const CustomerStorage = ({ children }) => {
       setData(json);
       setLogin(true);
       await customerPurchases(json.id);
-      navigate('/cadastro/compra');
+      navigate("/cadastro/compra");
     } catch (err) {
-      console.log('Erro no customerLogin:', err.message);
+      console.log("Erro no customerLogin:", err.message);
       setError(err.message);
       setLogin(false);
     } finally {
@@ -42,29 +42,16 @@ export const CustomerStorage = ({ children }) => {
     }
   }
 
-  async function customerPurchases(
-    customerId,
-    pageUrl = null,
-    accumulatedPurchases = []
-  ) {
+  async function customerPurchases(customerId) {
     try {
       setLoading(true);
-      const { url, options } = pageUrl
-        ? { url: pageUrl, options: {} }
-        : COMPRAS_GET(customerId);
+      const { url, options } = COMPRAS_GET(customerId);
       const response = await fetch(url, options);
       if (!response.ok) throw new Error(`Error: ${response.statusText}`);
       const json = await response.json();
-
-      const updatedPurchases = [...accumulatedPurchases, ...json.results];
-
-      if (json.next) {
-        await customerPurchases(customerId, json.next, updatedPurchases);
-      } else {
-        setPurchases(updatedPurchases);
-      }
+      setPurchases(json);
     } catch (err) {
-      console.log('Erro ao buscar compras:', err.message);
+      console.log("Erro ao buscar compras:", err.message);
       setError(err.message);
     } finally {
       setLoading(false);
