@@ -31,7 +31,6 @@ const VoucherModal = ({ isOpen, onClose, customerData, totalCompras }) => {
       currency: "BRL",
     }).format(value);
   };
-  console.log(customerData);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
