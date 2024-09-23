@@ -1,5 +1,3 @@
-import React from "react";
-
 const useValidadeDocument = () => {
   const validateCPF = (cpf) => {
     cpf = cpf.replace(/\D/g, "");

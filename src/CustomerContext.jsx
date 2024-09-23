@@ -1,5 +1,5 @@
 import React from "react";
-import { COMPRAS_GET, CUSTOMERS_GET } from "./services/api";
+import { COMPRAS_GET, CUSTOMERS_GET, STORES_GET } from "./services/api";
 import { useNavigate } from "react-router-dom";
 
 export const CustomerContext = React.createContext();
@@ -7,6 +7,7 @@ export const CustomerContext = React.createContext();
 export const CustomerStorage = ({ children }) => {
   const [data, setData] = React.useState(null);
   const [purchases, setPurchases] = React.useState([]);
+  const [stores, setStores] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
   const [login, setLogin] = React.useState(false);
@@ -15,10 +16,24 @@ export const CustomerStorage = ({ children }) => {
   const customerLogout = React.useCallback(async function () {
     setData(null);
     setPurchases([]);
+    setStores([]);
     setError(null);
     setLoading(false);
     setLogin(false);
   }, []);
+
+  async function fetchStores() {
+    try {
+      const { url, options } = STORES_GET();
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error(`Error: ${response.statusText}`);
+      const json = await response.json();
+      setStores(json.results);
+    } catch (err) {
+      console.log("Erro ao buscar lojas:", err.message);
+      setError(err.message);
+    }
+  }
 
   async function customerLogin(cpfecnpj) {
     try {
@@ -58,6 +73,10 @@ export const CustomerStorage = ({ children }) => {
     }
   }
 
+  React.useEffect(() => {
+    fetchStores();
+  }, []);
+
   return (
     <CustomerContext.Provider
       value={{
@@ -66,6 +85,7 @@ export const CustomerStorage = ({ children }) => {
         customerPurchases,
         data,
         purchases,
+        stores,
         loading,
         error,
         login,

@@ -1,19 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import FormSelect from "../../shared/FormSelect";
-import useFetch from "../../Hooks/useFetch";
-import { STORES_GET } from "../../../services/api";
+import { CustomerContext } from "@/CustomerContext";
 
 const FormStoreSelect = ({ selectedStore, setSelectedStore }) => {
-  const { data: stores, loading, error, request } = useFetch();
-
-  useEffect(() => {
-    const fetchStores = async () => {
-      const { url, options } = STORES_GET();
-      await request(url, options);
-    };
-
-    fetchStores();
-  }, [request]);
+  const { stores, loading, error } = React.useContext(CustomerContext);
 
   return (
     <>
@@ -22,7 +12,7 @@ const FormStoreSelect = ({ selectedStore, setSelectedStore }) => {
       {!loading && stores && (
         <FormSelect
           label='Selecione uma loja'
-          options={stores.results.map((store) => ({
+          options={stores.map((store) => ({
             value: store.id.toString(),
             label: store.name,
           }))}

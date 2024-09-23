@@ -80,7 +80,7 @@ const CustomerTable = ({
           {purchases.map((purchase) => (
             <TableRow key={purchase.id}>
               <TableCell className='font-medium'>{purchase.invoice}</TableCell>
-              <TableCell>{purchase.store}</TableCell>
+              <TableCell>{purchase.store_name}</TableCell>
               <TableCell>{formatDate(purchase.date)}</TableCell>
               <TableCell className='text-right'>
                 {formatCurrency(purchase.value)}{" "}
