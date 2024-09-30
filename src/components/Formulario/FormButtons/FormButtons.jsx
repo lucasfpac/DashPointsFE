@@ -29,7 +29,10 @@ const FormButtons = ({ loading, totalCompras, targetValue }) => {
       {loading ? (
         <Button disabled>Finalizar</Button>
       ) : (
-        <Button onClick={openVoucherModal} disabled={!isTargetReached}>
+        <Button
+          onClick={openVoucherModal}
+          disabled={!isTargetReached || !hasActiveEvent}
+        >
           Finalizar
         </Button>
       )}
