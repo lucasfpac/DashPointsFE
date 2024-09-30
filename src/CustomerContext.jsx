@@ -18,9 +18,10 @@ export const CustomerStorage = ({ children }) => {
   const [error, setError] = React.useState(null);
   const [login, setLogin] = React.useState(false);
   const [hasActiveEvent, setHasActiveEvent] = React.useState(false);
-  const [today, setToday] = React.useState(new Date());
+  const [activeEventId, setActiveEventId] = React.useState(null);
   const navigate = useNavigate();
 
+  const today = new Date();
   const customerLogout = React.useCallback(async function () {
     setData(null);
     setPurchases([]);
@@ -52,22 +53,28 @@ export const CustomerStorage = ({ children }) => {
 
       const activeEvent = results.find((event) => {
         const startDate = new Date(event.start_date);
+        startDate.setDate(startDate.getDate() + 1);
         const endDate = new Date(event.end_date);
+        endDate.setDate(endDate.getDate() + 1);
         return today >= startDate && today <= endDate;
       });
 
       if (activeEvent) {
         setMetaBrinde(Number(activeEvent.voucher_value));
         setHasActiveEvent(true);
+        setActiveEventId(activeEvent.id);
         return activeEvent.id;
       } else {
         setMetaBrinde(0);
         setHasActiveEvent(false);
+        setActiveEventId(null);
         return null;
       }
     } catch (err) {
       console.log("Erro ao buscar eventos:", err.message);
       setMetaBrinde(0);
+      setHasActiveEvent(false);
+      setActiveEventId(null);
       return null;
     }
   }
@@ -127,6 +134,7 @@ export const CustomerStorage = ({ children }) => {
         customerPurchases,
         fetchActiveEvent,
         hasActiveEvent,
+        activeEventId,
         today,
         metaBrinde,
         data,

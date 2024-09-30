@@ -14,14 +14,16 @@ const CustomerInfo = () => {
     purchases,
     loading,
     error,
+    activeEventId,
+    metaBrinde,
   } = useContext(CustomerContext);
 
   const totalCompras =
     purchases && purchases.length > 0
-      ? purchases.reduce((acc, compra) => acc + Number(compra.value), 0)
+      ? purchases
+          .filter((compra) => compra.event === activeEventId)
+          .reduce((acc, compra) => acc + Number(compra.value), 0)
       : 0;
-
-  const targetValue = 2000;
 
   return (
     <div className='flex flex-col min-h-screen'>
@@ -50,7 +52,7 @@ const CustomerInfo = () => {
             <FormButtons
               loading={loading ? loading : undefined}
               totalCompras={totalCompras}
-              targetValue={targetValue}
+              targetValue={metaBrinde}
             />
           </div>
         </div>

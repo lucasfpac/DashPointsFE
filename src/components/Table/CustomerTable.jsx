@@ -32,7 +32,7 @@ const CustomerTable = ({
   loading,
   error,
 }) => {
-  const { hasActiveEvent } = React.useContext(CustomerContext);
+  const { hasActiveEvent, activeEventId } = React.useContext(CustomerContext);
 
   const openPrintWindow = (invoice, customer) => {
     const purchase = purchases.find((p) => p.invoice === invoice);
@@ -54,6 +54,10 @@ const CustomerTable = ({
     };
   };
 
+  const currentPurchases = purchases.filter(
+    (purchase) => purchase.event === activeEventId
+  );
+
   if (loading) {
     return <p>Carregando dados...</p>;
   }
@@ -62,7 +66,7 @@ const CustomerTable = ({
     return <p className='text-center'>Não há eventos em andamento</p>;
   }
 
-  if (!purchases || purchases.length === 0) {
+  if (!currentPurchases || currentPurchases.length === 0) {
     return <p className='text-center'>Não há compras disponíveis.</p>;
   }
 
@@ -84,7 +88,7 @@ const CustomerTable = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {purchases.map((purchase) => (
+          {currentPurchases.map((purchase) => (
             <TableRow key={purchase.id}>
               <TableCell className='font-medium'>{purchase.invoice}</TableCell>
               <TableCell>{purchase.store_name}</TableCell>
