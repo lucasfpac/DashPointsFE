@@ -55,6 +55,10 @@ const CustomerTable = ({
     return <p>Carregando dados...</p>;
   }
 
+  if (!purchases || purchases.length === 0) {
+    return <p>Não há compras disponíveis.</p>;
+  }
+
   if (error) {
     return <p>Erro ao carregar dados: {error}</p>;
   }

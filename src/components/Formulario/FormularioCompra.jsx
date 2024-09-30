@@ -1,7 +1,7 @@
 import React from "react";
 import useForm from "../Hooks/useForm";
 import useFetch from "../Hooks/useFetch";
-import { COMPRAS_POST } from "../../services/api";
+import { PURCHASES_POST } from "../../services/api";
 import FormPurchaseDetails from "./FormPurchaseDetails/FormPurchaseDetails";
 import FormDate from "../shared/FormDate";
 import Error from "@/components/Helper/Error";
@@ -11,10 +11,10 @@ import { format } from "date-fns";
 import { CustomerContext } from "@/CustomerContext";
 
 const FormularioCompra = ({ onClose }) => {
-  const today = new Date();
   const [selectedStore, setSelectedStore] = React.useState("");
   const [selectedDate, setSelectedDate] = React.useState(today);
-  const { data, customerPurchases } = React.useContext(CustomerContext);
+  const { data, customerPurchases, fetchActiveEvent, today } =
+    React.useContext(CustomerContext);
 
   const nf = useForm("number");
   const valor = useForm("currency");
@@ -25,6 +25,7 @@ const FormularioCompra = ({ onClose }) => {
     event.preventDefault();
 
     const formData = new FormData();
+    const activeEventId = await fetchActiveEvent();
 
     formData.append("invoice", Number(nf.value));
     formData.append("date", format(selectedDate, "yyyy-MM-dd"));
@@ -32,7 +33,12 @@ const FormularioCompra = ({ onClose }) => {
     formData.append("store", Number(selectedStore));
     formData.append("customer", Number(data.id));
 
-    const { url, options } = COMPRAS_POST(formData);
+    if (activeEventId) {
+      formData.append("event", activeEventId);
+    }
+    console.log(activeEventId);
+
+    const { url, options } = PURCHASES_POST(formData);
     const { response } = await request(url, options);
     if (response && response.ok) {
       await customerPurchases(data.id);

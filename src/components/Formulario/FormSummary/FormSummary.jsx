@@ -1,9 +1,10 @@
 import React from "react";
+import { CustomerContext } from "@/CustomerContext";
 
 const FormSummary = ({ totalCompras }) => {
-  const META_BRINDE = 20000;
+  const { metaBrinde } = React.useContext(CustomerContext);
 
-  let saldoRestante = META_BRINDE - totalCompras;
+  let saldoRestante = metaBrinde - totalCompras;
   if (saldoRestante < 0) {
     saldoRestante = 0;
   }

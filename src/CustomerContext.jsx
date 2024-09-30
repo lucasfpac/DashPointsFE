@@ -1,5 +1,10 @@
 import React from "react";
-import { COMPRAS_GET, CUSTOMERS_GET, STORES_GET } from "./services/api";
+import {
+  PURCHASES_GET,
+  CUSTOMERS_GET,
+  STORES_GET,
+  EVENTS_GET,
+} from "./services/api";
 import { useNavigate } from "react-router-dom";
 
 export const CustomerContext = React.createContext();
@@ -8,9 +13,11 @@ export const CustomerStorage = ({ children }) => {
   const [data, setData] = React.useState(null);
   const [purchases, setPurchases] = React.useState([]);
   const [stores, setStores] = React.useState([]);
+  const [metaBrinde, setMetaBrinde] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
   const [login, setLogin] = React.useState(false);
+  const [today, setToday] = React.useState(new Date());
   const navigate = useNavigate();
 
   const customerLogout = React.useCallback(async function () {
@@ -32,6 +39,33 @@ export const CustomerStorage = ({ children }) => {
     } catch (err) {
       console.log("Erro ao buscar lojas:", err.message);
       setError(err.message);
+    }
+  }
+
+  async function fetchActiveEvent() {
+    try {
+      const { url, options } = EVENTS_GET();
+      const response = await fetch(url, options);
+      if (!response.ok) throw new Error(`Error: ${response.statusText}`);
+      const { results } = await response.json();
+
+      const activeEvent = results.find((event) => {
+        const startDate = new Date(event.start_date);
+        const endDate = new Date(event.end_date);
+        return today >= startDate && today <= endDate;
+      });
+
+      if (activeEvent) {
+        setMetaBrinde(Number(activeEvent.voucher_value));
+        return activeEvent.id;
+      } else {
+        setMetaBrinde(0);
+        return null;
+      }
+    } catch (err) {
+      console.log("Erro ao buscar eventos:", err.message);
+      setMetaBrinde(0);
+      return null;
     }
   }
 
@@ -60,8 +94,12 @@ export const CustomerStorage = ({ children }) => {
   async function customerPurchases(customerId) {
     try {
       setLoading(true);
-      const { url, options } = COMPRAS_GET(customerId);
+      const { url, options } = PURCHASES_GET(customerId);
       const response = await fetch(url, options);
+      if (response.status === 404) {
+        setPurchases([]);
+        return;
+      }
       if (!response.ok) throw new Error(`Error: ${response.statusText}`);
       const json = await response.json();
       setPurchases(json);
@@ -75,6 +113,7 @@ export const CustomerStorage = ({ children }) => {
 
   React.useEffect(() => {
     fetchStores();
+    fetchActiveEvent();
   }, []);
 
   return (
@@ -83,6 +122,9 @@ export const CustomerStorage = ({ children }) => {
         customerLogin,
         customerLogout,
         customerPurchases,
+        fetchActiveEvent,
+        today,
+        metaBrinde,
         data,
         purchases,
         stores,
