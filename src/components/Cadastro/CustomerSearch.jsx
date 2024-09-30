@@ -31,6 +31,7 @@ const Cadastro = () => {
         />
         <div className='flex-grow flex items-center justify-center p-4 mt-20'>
           <form
+            id='formCustomerSearch'
             className='w-full max-w-4xl bg-white p-6 rounded-lg shadow-md'
             onSubmit={handleSubmit}
           >
@@ -39,6 +40,7 @@ const Cadastro = () => {
               type='text'
               id='cpfncnpj'
               title='CPF/CNPJ'
+              name='cpfncnpj'
               placeholder='XXX.XXX.XXX-XX OU XX.XXX.XXX/0001-XX'
               {...cpfecnpj}
             />

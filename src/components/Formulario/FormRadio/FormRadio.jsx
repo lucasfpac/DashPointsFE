@@ -16,6 +16,7 @@ const FormRadio = ({
   return (
     <>
       <FormRadioGroup
+        name='stores'
         label='Sentiu falta de alguma loja?'
         value={selectedValue}
         onChange={setSelectedValue}

@@ -11,6 +11,7 @@ const FormStoreSelect = ({ selectedStore, setSelectedStore }) => {
       {error && <p>Erro ao carregar lojas: {error}</p>}
       {!loading && stores && (
         <FormSelect
+          id='storeSelect'
           label='Selecione uma loja'
           options={stores.map((store) => ({
             value: store.id.toString(),

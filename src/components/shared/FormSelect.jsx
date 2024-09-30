@@ -9,11 +9,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const FormSelect = ({ label, options = [], placeholder, onChange, value }) => {
+const FormSelect = ({
+  id,
+  label,
+  options = [],
+  placeholder,
+  onChange,
+  value,
+}) => {
   return (
     <div className='mt-4'>
-      <Label className='block text-sm font-medium'>{label}</Label>
-      <Select onValueChange={onChange} value={value}>
+      <Label htmlFor={id} className='block text-sm font-medium'>
+        {label}
+      </Label>
+      <Select id={id} onValueChange={onChange} value={value} aria-label={label}>
         <SelectTrigger className='w-full mt-2'>
           <SelectValue placeholder={placeholder}>
             {options.find((option) => option.value === value)?.label}

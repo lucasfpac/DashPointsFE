@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 const FormRadioGroup = ({
   onChange,
   value,
+  name,
   label,
   options,
   additionalInput,
@@ -13,8 +14,11 @@ const FormRadioGroup = ({
 }) => {
   return (
     <div className='mt-4'>
-      <Label className='font-medium text-sm mb-2'>{label}</Label>
+      <Label htmlFor={name} className='font-medium text-sm mb-2'>
+        {label}
+      </Label>
       <RadioGroup
+        id={name}
         onValueChange={onChange}
         className='flex space-x-10'
         value={value}
@@ -35,6 +39,7 @@ const FormRadioGroup = ({
       {additionalInput && value === additionalInput.condition && (
         <div className='mt-2'>
           <Input
+            id='addStore'
             placeholder={additionalInput.placeholder}
             value={additionalInput.value}
             onChange={(event) => onAdditionalInputChange(event.target.value)}
