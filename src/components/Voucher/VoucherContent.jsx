@@ -13,16 +13,16 @@ const VoucherContent = ({ purchase, customer }) => {
   }
 
   return (
-    <div class='voucher'>
-      <div class='voucher-info'>
-        <p class='centered-bold'>VOUCHER PARA TROCA</p>
-        <p class='centered'>
+    <div className='voucher'>
+      <div className='voucher-info'>
+        <p className='centered-bold'>VOUCHER PARA TROCA</p>
+        <p className='centered'>
           Emitido em {formatDate(purchase.date) || "Data não disponível"}
         </p>
       </div>
-      <div class='separator'></div>
-      <div class='voucher-personal-info'>
-        <p class='centered-bold'>Dados Pessoais</p>
+      <div className='separator'></div>
+      <div className='voucher-personal-info'>
+        <p className='centered-bold'>Dados Pessoais</p>
         <br />
         <p>
           <strong>CPF/CNPJ:</strong> {formatCPFOrCNPJ(customer.cpf_cnpj)}
@@ -34,9 +34,9 @@ const VoucherContent = ({ purchase, customer }) => {
           <strong>E-mail:</strong> {customer.email}
         </p>
       </div>
-      <div class='separator'></div>
-      <div class='voucher-purchase-info'>
-        <p class='centered-bold'>Dados da Compra</p>
+      <div className='separator'></div>
+      <div className='voucher-purchase-info'>
+        <p className='centered-bold'>Dados da Compra</p>
         <br />
         <p>
           <strong>Loja:</strong> {purchase.store_name}
@@ -48,15 +48,15 @@ const VoucherContent = ({ purchase, customer }) => {
           <strong>Valor da NF:</strong> {formatCurrency(purchase.value)}
         </p>
       </div>
-      <div class='separator'></div>
-      <div class='voucher-footer'>
+      <div className='separator'></div>
+      <div className='voucher-footer'>
         <p>
           <strong>Valor Total:</strong> {formatCurrency(purchase.value)}
         </p>
         <br />
         <p>Procure o espaço concierge e informe este</p>
       </div>
-      <div class='voucher-confirmation-code'>
+      <div className='voucher-confirmation-code'>
         <p>CÓDIGO DE CONFIRMAÇÃO</p>
         <p>{purchase.id}</p>
       </div>
