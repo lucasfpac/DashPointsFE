@@ -50,12 +50,15 @@ export function CUSTOMERS_POST(body) {
   };
 }
 
-export function PURCHASES_POST(formData) {
+export function PURCHASES_POST(body) {
   return {
     url: API_URL + `/purchases/`,
     options: {
       method: "POST",
-      body: formData,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
     },
   };
 }

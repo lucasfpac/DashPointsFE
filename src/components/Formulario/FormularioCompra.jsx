@@ -12,9 +12,9 @@ import { CustomerContext } from "@/CustomerContext";
 
 const FormularioCompra = ({ onClose }) => {
   const [selectedStore, setSelectedStore] = React.useState("");
-  const [selectedDate, setSelectedDate] = React.useState(today);
   const { data, customerPurchases, fetchActiveEvent, today } =
     React.useContext(CustomerContext);
+  const [selectedDate, setSelectedDate] = React.useState(today);
 
   const nf = useForm("number");
   const valor = useForm("currency");
@@ -24,21 +24,18 @@ const FormularioCompra = ({ onClose }) => {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    const formData = new FormData();
     const activeEventId = await fetchActiveEvent();
 
-    formData.append("invoice", Number(nf.value));
-    formData.append("date", format(selectedDate, "yyyy-MM-dd"));
-    formData.append("value", valor.decimalString);
-    formData.append("store", Number(selectedStore));
-    formData.append("customer", Number(data.id));
+    const purchases = {
+      invoice: nf.value,
+      date: format(selectedDate, "yyyy-MM-dd"),
+      value: valor.decimalString,
+      store: Number(selectedStore),
+      customer: Number(data.id),
+      event: Number(activeEventId),
+    };
 
-    if (activeEventId) {
-      formData.append("event", activeEventId);
-    }
-    console.log(activeEventId);
-
-    const { url, options } = PURCHASES_POST(formData);
+    const { url, options } = PURCHASES_POST(purchases);
     const { response } = await request(url, options);
     if (response && response.ok) {
       await customerPurchases(data.id);
