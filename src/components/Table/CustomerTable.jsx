@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table";
 import PrintLayout from "../Voucher/VoucherPrintLayout";
 import { Button } from "../ui/button";
+import { CustomerContext } from "@/CustomerContext";
 
 export const formatCurrency = (value) => {
   return new Intl.NumberFormat("pt-BR", {
@@ -31,6 +32,8 @@ const CustomerTable = ({
   loading,
   error,
 }) => {
+  const { hasActiveEvent } = React.useContext(CustomerContext);
+
   const openPrintWindow = (invoice, customer) => {
     const purchase = purchases.find((p) => p.invoice === invoice);
     if (!purchase) {
@@ -55,16 +58,16 @@ const CustomerTable = ({
     return <p>Carregando dados...</p>;
   }
 
+  if (!hasActiveEvent) {
+    return <p className='text-center'>Não há eventos em andamento</p>;
+  }
+
   if (!purchases || purchases.length === 0) {
-    return <p>Não há compras disponíveis.</p>;
+    return <p className='text-center'>Não há compras disponíveis.</p>;
   }
 
   if (error) {
     return <p>Erro ao carregar dados: {error}</p>;
-  }
-
-  if (!purchases || purchases.length === 0) {
-    return <p>Não há compras disponíveis.</p>;
   }
 
   return (

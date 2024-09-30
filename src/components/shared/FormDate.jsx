@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Label } from "@/components/ui/label";
 import {
   Popover,
@@ -8,13 +8,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
+import { CustomerContext } from "@/CustomerContext";
 
 const FormDate = ({ name, title, onChange, value }) => {
-  const today = new Date();
-  const [open, setOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(value || today);
+  const { today } = React.useContext(CustomerContext);
+  const [open, setOpen] = React.useState(false);
+  const [selectedDate, setSelectedDate] = React.useState(value || today);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (value) {
       setSelectedDate(value);
     }

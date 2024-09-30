@@ -17,6 +17,7 @@ export const CustomerStorage = ({ children }) => {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
   const [login, setLogin] = React.useState(false);
+  const [hasActiveEvent, setHasActiveEvent] = React.useState(false);
   const [today, setToday] = React.useState(new Date());
   const navigate = useNavigate();
 
@@ -57,9 +58,11 @@ export const CustomerStorage = ({ children }) => {
 
       if (activeEvent) {
         setMetaBrinde(Number(activeEvent.voucher_value));
+        setHasActiveEvent(true);
         return activeEvent.id;
       } else {
         setMetaBrinde(0);
+        setHasActiveEvent(false);
         return null;
       }
     } catch (err) {
@@ -123,6 +126,7 @@ export const CustomerStorage = ({ children }) => {
         customerLogout,
         customerPurchases,
         fetchActiveEvent,
+        hasActiveEvent,
         today,
         metaBrinde,
         data,
