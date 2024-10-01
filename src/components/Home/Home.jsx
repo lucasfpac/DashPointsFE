@@ -13,7 +13,7 @@ const Home = () => {
             <img src={logo} alt='Logo' />
           </div>
           <p>Seja bem-vindo!</p>
-          <p>
+          <p className='text-center p-4'>
             Clique no botão abaixo, preencha os dados e cadastre sua compra em
             poucos cliques
           </p>
