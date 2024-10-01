@@ -11,7 +11,8 @@ import Title from "../Title/Title";
 const Cadastro = () => {
   const cpfecnpj = useForm("cpfecnpj");
 
-  const { customerLogin, error, loading } = React.useContext(CustomerContext);
+  const { customerLogin, customerLoginError, loading } =
+    React.useContext(CustomerContext);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -48,9 +49,9 @@ const Cadastro = () => {
               <Button disabled={loading} className='w-full max-w-xs'>
                 {loading ? "Carregando..." : "Avançar"}
               </Button>
-              {error && (
+              {customerLoginError && (
                 <div aria-live='polite' className='mt-3'>
-                  <Error error='CPF/CNPJ incorreto.' />
+                  <Error error='CPF/CNPJ não encontrado.' />
                 </div>
               )}
             </div>

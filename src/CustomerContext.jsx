@@ -16,6 +16,7 @@ export const CustomerStorage = ({ children }) => {
   const [metaBrinde, setMetaBrinde] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
+  const [customerLoginError, setCustomerLoginError] = React.useState(null);
   const [login, setLogin] = React.useState(false);
   const [hasActiveEvent, setHasActiveEvent] = React.useState(false);
   const [activeEventId, setActiveEventId] = React.useState(null);
@@ -27,12 +28,14 @@ export const CustomerStorage = ({ children }) => {
     setPurchases([]);
     setStores([]);
     setError(null);
+    setCustomerLoginError(null);
     setLoading(false);
     setLogin(false);
   }, []);
 
   async function fetchStores() {
     try {
+      setError(null);
       const { url, options } = STORES_GET();
       const response = await fetch(url, options);
       if (!response.ok) throw new Error(`Error: ${response.statusText}`);
@@ -46,6 +49,7 @@ export const CustomerStorage = ({ children }) => {
 
   async function fetchActiveEvent() {
     try {
+      setError(null);
       const { url, options } = EVENTS_GET();
       const response = await fetch(url, options);
       if (!response.ok) throw new Error(`Error: ${response.statusText}`);
@@ -79,7 +83,7 @@ export const CustomerStorage = ({ children }) => {
 
   async function customerLogin(cpfecnpj) {
     try {
-      setError(null);
+      setCustomerLoginError(null);
       setLoading(true);
       const { url, options } = CUSTOMERS_GET(cpfecnpj);
       const response = await fetch(url, options);
@@ -91,8 +95,7 @@ export const CustomerStorage = ({ children }) => {
       await customerPurchases(json.id);
       navigate("/cadastro/compra");
     } catch (err) {
-      console.log("Erro no customerLogin:", err.message);
-      setError(err.message);
+      setCustomerLoginError(err.message);
       setLogin(false);
     } finally {
       setLoading(false);
@@ -101,6 +104,7 @@ export const CustomerStorage = ({ children }) => {
 
   async function customerPurchases(customerId) {
     try {
+      setError(null);
       setLoading(true);
       const { url, options } = PURCHASES_GET(customerId);
       const response = await fetch(url, options);
@@ -120,9 +124,11 @@ export const CustomerStorage = ({ children }) => {
   }
 
   React.useEffect(() => {
+    if (login) {
+      fetchActiveEvent();
+    }
     fetchStores();
-    fetchActiveEvent();
-  }, []);
+  }, [login]);
 
   return (
     <CustomerContext.Provider
@@ -131,6 +137,7 @@ export const CustomerStorage = ({ children }) => {
         customerLogout,
         customerPurchases,
         fetchActiveEvent,
+        customerLoginError,
         hasActiveEvent,
         activeEventId,
         today,
